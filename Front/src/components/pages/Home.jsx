@@ -1,10 +1,19 @@
+import { useEffect, useState } from "react";
 import { Card, Container, Row, Col } from "react-bootstrap";
+import { getOffers } from "../../controllers/OfferController";
 
 function Home() {
+    const [offers, setOffers] = useState([]);
+
+    useEffect(()=>{
+        getOffers()
+            .then(o => setOffers(o))
+    }, [])
+
     return (
         <Container className="my-4">
             <Row>
-                {Array.from({ length: 10 }).map((_, index) => (
+                {offers.map((_, index) => (
                     <Col
                         key={index}
                         xs={6} /* 2 cards per row on small screens */
