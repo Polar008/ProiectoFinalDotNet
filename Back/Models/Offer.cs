@@ -21,7 +21,7 @@ namespace Backend.Models
         [ForeignKey("Charity")]
         public int CharityId { get; set; }
 
-        public User Charity { get; set; } = null!;
+        // public User Charity { get; set; } = null!;
 
         public int Capacity { get; set; }
 
@@ -29,7 +29,7 @@ namespace Backend.Models
         [ForeignKey("Province")]
         public int ProvinceId { get; set; }
 
-        public Province Province { get; set; } = null!;
+        // public Province Province { get; set; } = null!;
 
         [Required]
         [MaxLength(150)]

@@ -22,7 +22,7 @@ namespace Backend.Models
 
         public string? Photo { get; set; }
 
-        public int? year { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public bool IsEnterprise { get; set; }
 

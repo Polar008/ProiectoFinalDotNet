@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241125170356_InitialCreate")]
+    [Migration("20241125180309_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -64,10 +64,6 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CharityId");
-
-                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Offers");
                 });
@@ -191,25 +187,6 @@ namespace Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Backend.Models.Offer", b =>
-                {
-                    b.HasOne("Backend.Models.User", "Charity")
-                        .WithMany()
-                        .HasForeignKey("CharityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Models.Province", "Province")
-                        .WithMany()
-                        .HasForeignKey("ProvinceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Charity");
-
-                    b.Navigation("Province");
                 });
 #pragma warning restore 612, 618
         }

@@ -62,10 +62,6 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CharityId");
-
-                    b.HasIndex("ProvinceId");
-
                     b.ToTable("Offers");
                 });
 
@@ -188,25 +184,6 @@ namespace Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Backend.Models.Offer", b =>
-                {
-                    b.HasOne("Backend.Models.User", "Charity")
-                        .WithMany()
-                        .HasForeignKey("CharityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Models.Province", "Province")
-                        .WithMany()
-                        .HasForeignKey("ProvinceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Charity");
-
-                    b.Navigation("Province");
                 });
 #pragma warning restore 612, 618
         }
