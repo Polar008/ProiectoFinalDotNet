@@ -1,16 +1,23 @@
-import { Form, Button } from "react-bootstrap";
+import { Form, InputGroup, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function SerchBar() {
     return (
-        <Form className="d-flex">
-            <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-            />
-            <Button variant="outline-primary">Search</Button>
-        </Form>
+        <div className="search-bar-container">
+            <Form className="d-flex">
+                <InputGroup>
+                    <Form.Control
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                    />
+                    <Button variant="outline-primary">
+                        <FontAwesomeIcon icon={faSearch} />
+                    </Button>
+                </InputGroup>
+            </Form>
+        </div>
     )
 }
 
