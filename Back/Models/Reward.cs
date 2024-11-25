@@ -12,7 +12,7 @@ namespace Backend.Models
 		[ForeignKey("ShopOffer")]
 		public int ShopOfferId { get; set; }
 
-		public ShopOffer ShopOffer { get; set; } = null!;
+		// public ShopOffer ShopOffer { get; set; } = null!;
 
 		[Required]
 		[MaxLength(50)]

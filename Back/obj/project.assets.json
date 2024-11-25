@@ -7463,11 +7463,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\yordy\\Documents\\dev\\bootcamp\\.net\\ProiectoFinalDotNet\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Users\\yordy\\Documents\\dev\\bootcamp\\.net\\ProiectoFinalDotNet\\Back\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Users\\yordy\\Documents\\dev\\bootcamp\\.net\\ProiectoFinalDotNet\\Backend\\Backend.csproj",
+      "projectPath": "C:\\Users\\yordy\\Documents\\dev\\bootcamp\\.net\\ProiectoFinalDotNet\\Back\\Backend.csproj",
       "packagesPath": "C:\\Users\\yordy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\yordy\\Documents\\dev\\bootcamp\\.net\\ProiectoFinalDotNet\\Backend\\obj\\",
+      "outputPath": "C:\\Users\\yordy\\Documents\\dev\\bootcamp\\.net\\ProiectoFinalDotNet\\Back\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\yordy\\AppData\\Roaming\\NuGet\\NuGet.Config",
