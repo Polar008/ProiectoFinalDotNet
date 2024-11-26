@@ -5,3 +5,9 @@
     padding: 10px;          /* Optional padding */
     background-color: #f8f9fa; /* Light background */
 }
+
+.arrowOffer{
+    position: absolute;
+    top: 2%;
+    left: 2%;
+}

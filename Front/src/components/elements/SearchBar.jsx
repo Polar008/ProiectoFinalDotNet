@@ -2,7 +2,7 @@ import { Form, InputGroup, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-function SerchBar() {
+function SearchBar() {
     return (
         <div className="search-bar-container">
             <Form className="d-flex">
@@ -21,4 +21,4 @@ function SerchBar() {
     )
 }
 
-export default SerchBar;
+export default SearchBar;

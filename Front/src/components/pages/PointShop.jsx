@@ -1,7 +1,12 @@
-function PointShop(){
-    return(
+import NavBar from "../elements/NavBar";
+import SearchBar from "../elements/SearchBar";
+
+function PointShop() {
+    return (
         <>
-        <h1>PointShop</h1>
+            <SearchBar />
+            <h1>PointShop</h1>
+            <NavBar />
         </>
     )
 }
