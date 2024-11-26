@@ -5,7 +5,7 @@ import { getOffer } from "../../controllers/OfferController";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBuilding } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 
 function Offer() {
@@ -45,18 +45,23 @@ function Offer() {
                     </Col>
                 </Row>
                 <Row className="justify-content-left">
-                    <Col xs={2} lg={1} className="text-left">
+                    <Col xs={1} lg={1} className="text-left">
                         <FontAwesomeIcon icon={faMapMarkerAlt} />
                     </Col>
-                    <Col xs={3} lg={2} className="text-left">
-                        <p className="lead">{offer.city}</p>
-                    </Col>
-                    <Col xs={7} lg={3} className="text-left">
-                        <p className="lead">{offer.street}</p>
+                    <Col xs={11} lg={2} className="text-left">
+                        <p className="lead">{offer.province?.name + ", " + offer.city + ", " + offer.street}</p>
                     </Col>
                 </Row>
                 <Row className="justify-content-left">
-                    <Col xs={2} lg={1} className="text-left">
+                    <Col xs={1} lg={1} className="text-left">
+                        <FontAwesomeIcon icon={faBuilding} />
+                    </Col>
+                    <Col xs={3} lg={2} className="text-left">
+                        <p className="lead">{offer.charity?.name}</p>
+                    </Col>
+                </Row>
+                <Row className="justify-content-left">
+                    <Col xs={1} lg={1} className="text-left">
                         <FontAwesomeIcon icon={faUser} />
                     </Col>
                     <Col xs={3} lg={2} className="text-left">
