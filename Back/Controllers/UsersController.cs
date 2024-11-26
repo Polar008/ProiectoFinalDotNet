@@ -6,18 +6,24 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
+    // [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UsersController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
         }
 
         // GET: api/Users
@@ -29,6 +35,7 @@ namespace Backend.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -52,6 +59,7 @@ namespace Backend.Controllers
             }
 
             _context.Entry(user).State = EntityState.Modified;
+            user.Password = _passwordHasher.HashPassword(user, user.Password);
 
             try
             {
@@ -74,13 +82,18 @@ namespace Backend.Controllers
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [AllowAnonymous] // Per accedir sense token a la creació de l'usuari
+        public async Task<IActionResult> Register(User user)
         {
+            // Codificar la contrasenya
+            user.Password = _passwordHasher.HashPassword(user, user.Password);
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction(nameof(Register), new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
