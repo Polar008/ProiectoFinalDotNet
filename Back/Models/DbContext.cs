@@ -20,6 +20,12 @@ namespace Backend.Models
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<Offer>()
+                .HasOne(o => o.Province)
+                .WithMany(p => p.Offers)
+                .HasForeignKey(o => o.ProvinceId);
+
         }
     }
 

@@ -22,7 +22,7 @@ namespace Backend.Migrations
                     ImgBanner = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CharityId = table.Column<int>(type: "int", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
-                    ProvinceId = table.Column<int>(type: "int", nullable: false),
+                    Province = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Street = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },

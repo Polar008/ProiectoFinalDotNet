@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Backend.Models
 {
@@ -20,16 +21,15 @@ namespace Backend.Models
         [Required]
         [ForeignKey("Charity")]
         public int CharityId { get; set; }
-
-        // public User Charity { get; set; } = null!;
+        public User Charity { get; set; } = null!;
 
         public int Capacity { get; set; }
 
         [Required]
         [ForeignKey("Province")]
+        [JsonIgnore]
         public int ProvinceId { get; set; }
-
-        // public Province Province { get; set; } = null!;
+        public Province Province { get; set; } = null!;
 
         [Required]
         [MaxLength(150)]
