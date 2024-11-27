@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241125182743_InitialCreate")]
+    [Migration("20241127083427_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -65,6 +65,10 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CharityId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Offers");
                 });
@@ -188,6 +192,79 @@ namespace Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Backend.Models.UserOffer", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "OfferId");
+
+                    b.HasIndex("OfferId");
+
+                    b.ToTable("UserOffers");
+                });
+
+            modelBuilder.Entity("Backend.Models.Offer", b =>
+                {
+                    b.HasOne("Backend.Models.User", "Charity")
+                        .WithMany("Offers")
+                        .HasForeignKey("CharityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.Province", "Province")
+                        .WithMany("Offers")
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Charity");
+
+                    b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("Backend.Models.UserOffer", b =>
+                {
+                    b.HasOne("Backend.Models.Offer", "Offer")
+                        .WithMany("UserOffers")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.User", "User")
+                        .WithMany("UserOffers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Offer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Backend.Models.Offer", b =>
+                {
+                    b.Navigation("UserOffers");
+                });
+
+            modelBuilder.Entity("Backend.Models.Province", b =>
+                {
+                    b.Navigation("Offers");
+                });
+
+            modelBuilder.Entity("Backend.Models.User", b =>
+                {
+                    b.Navigation("Offers");
+
+                    b.Navigation("UserOffers");
                 });
 #pragma warning restore 612, 618
         }

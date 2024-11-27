@@ -39,6 +39,23 @@ public class Program
 
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        });
+
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+        });
+
+        // builder.Services.AddControllers().AddNewtonsoftJson(options =>
+        // {
+        //     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        //     options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
+        // });
+
 
         builder.Services.AddAuthentication(options =>
         {
@@ -55,7 +72,7 @@ public class Program
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
                 ValidAudience = builder.Configuration["Jwt:Audience"],
-                // IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
             };
         });
 
@@ -72,8 +89,8 @@ public class Program
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
 
-                db.Database.EnsureDeleted();
-                db.Database.Migrate();
+                // db.Database.EnsureDeleted();
+                // db.Database.Migrate();
 
                 if (!db.Users.Any(u => u.Email == "admin@gmail.com"))
                 {
@@ -100,6 +117,76 @@ public class Program
 
                 }
 
+                if (!db.Provinces.Any(u => u.Name == "Lleida"))
+                {
+                    var province1 = new Province
+                    {
+                        Name = "Lleida",
+                        Code = "25200"
+                    };
+                    db.Provinces.Add(province1);
+                    db.SaveChanges();
+                }
+
+                if (!db.Provinces.Any(u => u.Name == "Madrid"))
+                {
+                    var province2 = new Province
+                    {
+                        Name = "Madrid",
+                        Code = "10200"
+                    };
+                    db.Provinces.Add(province2);
+                    db.SaveChanges();
+                }
+
+
+                if (!db.Offers.Any(u => u.Title == "Computación Gráfica"))
+                {
+                    var createOfferDto1 = new Offer
+                    {
+                        Title = "Computación Gráfica",
+                        Description = "Test 1",
+                        CharityId = 1,
+                        ProvinceId = 1,
+                        Capacity = 20,
+                        Street = "Avinguda Test",
+                        City = "Barcelona"
+                    };
+                    db.Offers.Add(createOfferDto1);
+                    db.SaveChanges();
+                }
+
+                if (!db.Offers.Any(u => u.Title == ".NET"))
+                {
+                    var createOfferDto1 = new Offer
+                    {
+                        Title = ".NET",
+                        Description = "Test 2",
+                        CharityId = 1,
+                        ProvinceId = 1,
+                        Capacity = 10,
+                        Street = "Avinguda Test",
+                        City = "Barcelona"
+                    };
+                    db.Offers.Add(createOfferDto1);
+                    db.SaveChanges();
+                }
+
+                 if (!db.Offers.Any(u => u.Title == "AI"))
+                {
+                    var createOfferDto1 = new Offer
+                    {
+                        Title = "AI",
+                        Description = "Fine Tuning",
+                        CharityId = 2,
+                        ProvinceId = 2,
+                        Capacity = 3,
+                        Street = "Avinguda Test",
+                        City = "Barcelona"
+                    };
+                    db.Offers.Add(createOfferDto1);
+                    db.SaveChanges();
+                }
 
                 db.SaveChanges();
             }
