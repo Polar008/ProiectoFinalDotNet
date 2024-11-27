@@ -101,9 +101,6 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ReedemableCode")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -112,7 +109,12 @@ namespace Backend.Migrations
                     b.Property<int>("ShopOfferId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShopOfferId");
 
                     b.ToTable("Rewards");
                 });
@@ -226,6 +228,17 @@ namespace Backend.Migrations
                     b.Navigation("Charity");
 
                     b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("Backend.Models.Reward", b =>
+                {
+                    b.HasOne("Backend.Models.ShopOffer", "ShopOffer")
+                        .WithMany()
+                        .HasForeignKey("ShopOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShopOffer");
                 });
 
             modelBuilder.Entity("Backend.Models.UserOffer", b =>

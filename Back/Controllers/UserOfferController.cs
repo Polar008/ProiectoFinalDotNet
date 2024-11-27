@@ -54,7 +54,10 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUserOffer(UserOfferDto userOfferDto)
         {
-            var userExists = await _context.Users.AnyAsync(u => u.Id == userOfferDto.UserId);
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            int userId = Int32.Parse(userIdClaim);
+
+            var userExists = await _context.Users.AnyAsync(u => u.Id == userId);
             if (!userExists)
             {
                 return BadRequest(new { Message = "The user does not exist." });
@@ -68,7 +71,7 @@ namespace Backend.Controllers
 
             var userOffer = new UserOffer
             {
-                UserId = userOfferDto.UserId,
+                UserId = userId,
                 OfferId = userOfferDto.OfferId
             };
 
@@ -151,9 +154,12 @@ namespace Backend.Controllers
             return Ok(userOffers);
         }
 
-        [HttpDelete("Unsubscribe/{userId}/{offerId}")]
-        public async Task<IActionResult> Unsubscribe(int userId, int offerId)
+        [HttpDelete("Unsubscribe/{offerId}")]
+        public async Task<IActionResult> Unsubscribe(int offerId)
         {
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            int userId = Int32.Parse(userIdClaim);
+
             var userOffer = await _context.UserOffers
                 .FirstOrDefaultAsync(uo => uo.UserId == userId && uo.OfferId == offerId);
 

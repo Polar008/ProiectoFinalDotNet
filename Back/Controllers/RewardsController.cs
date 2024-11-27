@@ -6,11 +6,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
+using NuGet.Protocol;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
+    [Authorize]
     public class RewardsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -82,6 +87,79 @@ namespace Backend.Controllers
 
             return CreatedAtAction("GetReward", new { id = reward.Id }, reward);
         }
+
+        [HttpPut("use/{rewardId}/{userId}")]
+        public async Task<IActionResult> UseReward(int rewardId, int userId)
+        {
+            var reward = await _context.Rewards.FindAsync(rewardId);
+            if (reward == null)
+            {
+                return NotFound(new { Message = $"Reward with ID {rewardId} not found." });
+            }
+
+            var user = await _context.Users.AnyAsync(u => u.Id == userId);
+            if (!user)
+            {
+                return BadRequest(new { Message = "The new user does not exist." });
+            }
+
+            reward.UserId = userId;
+            _context.Entry(reward).Property(r => r.UserId).IsModified = true;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Reward updated successfully.", Reward = reward });
+        }
+
+
+        [HttpPost("generate")]
+        public async Task<ActionResult<Reward>> GenerateReward(UserShopOfferDto userShopOfferDto)
+        {
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            int userId = Int32.Parse(userIdClaim);
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return BadRequest(new { Message = "The user does not exist." });
+            }
+
+            var shopOffer = await _context.ShopOffers.FindAsync(userShopOfferDto.ShopOfferId);
+            if (shopOffer == null)
+            {
+                return BadRequest(new { Message = "The shopOffer does not exist." });
+            }
+
+            if (user.Points < shopOffer.Cost)
+            {
+                return BadRequest(new { Message = "The user does not have enough points." });
+            }
+
+            user.Points -= shopOffer.Cost;
+
+            Reward newReward = new Reward
+            {
+                ReedemableCode = Guid.NewGuid().ToString(),
+                UserId = -1,
+                ShopOfferId = shopOffer.Id
+            };
+
+            _context.Users.Update(user);
+            _context.Rewards.Add(newReward);
+
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetReward", new { id = newReward.Id }, newReward);
+        }
+
+
+        // [HttpPost("generate")]
+        // public async Task<ActionResult<Reward>> GenerateReward(UserShopOfferDto userShopOfferDto)
+        // {
+
+        //     var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+        //     // var userIdClaim = User?.FindFirst(Claims.)?.Value;
+        //     return Content(userIdClaim.ToJson());
+        // }
+
 
         // DELETE: api/Rewards/5
         [HttpDelete("{id}")]
