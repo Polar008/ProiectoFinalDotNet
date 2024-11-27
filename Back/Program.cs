@@ -33,8 +33,8 @@ public class Program
         // Configura l'autorització amb la política "AdminOnly"
         builder.Services.AddAuthorization(options =>
         {
-            options.AddPolicy("AdminOnly", policy =>
-                policy.RequireClaim("IsAdmin", "True"));
+            // options.AddPolicy("AdminOnly", policy =>
+            //     policy.RequireClaim("isEnterprise", "True"));
         });
 
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -172,7 +172,7 @@ public class Program
                     db.SaveChanges();
                 }
 
-                 if (!db.Offers.Any(u => u.Title == "AI"))
+                if (!db.Offers.Any(u => u.Title == "AI"))
                 {
                     var createOfferDto1 = new Offer
                     {
@@ -196,12 +196,13 @@ public class Program
 
         app.UseCors("AllowAllOrigins");
 
-        // app.UseStaticFiles(new StaticFileOptions
-        // {
-        //     FileProvider = new PhysicalFileProvider(
-        //         Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
-        //     RequestPath = "/uploads"
-        // });
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
+            RequestPath = "/uploads"
+        });
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
