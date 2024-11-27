@@ -18,6 +18,6 @@ namespace Backend.Models
 		[MaxLength(50)]
 		public string ReedemableCode { get; set; } = string.Empty;
 
-		public bool IsUsed { get; set; }
+		public int? UserId { get; set; }
 	}
 }

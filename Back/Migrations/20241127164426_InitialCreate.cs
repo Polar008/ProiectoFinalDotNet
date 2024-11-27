@@ -26,21 +26,6 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rewards",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ShopOfferId = table.Column<int>(type: "int", nullable: false),
-                    ReedemableCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    IsUsed = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rewards", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ShopOffers",
                 columns: table => new
                 {
@@ -74,6 +59,27 @@ namespace Backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rewards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShopOfferId = table.Column<int>(type: "int", nullable: false),
+                    ReedemableCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rewards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rewards_ShopOffers_ShopOfferId",
+                        column: x => x.ShopOfferId,
+                        principalTable: "ShopOffers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,6 +150,11 @@ namespace Backend.Migrations
                 column: "ProvinceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rewards_ShopOfferId",
+                table: "Rewards",
+                column: "ShopOfferId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserOffers_OfferId",
                 table: "UserOffers",
                 column: "OfferId");
@@ -162,10 +173,10 @@ namespace Backend.Migrations
                 name: "Rewards");
 
             migrationBuilder.DropTable(
-                name: "ShopOffers");
+                name: "UserOffers");
 
             migrationBuilder.DropTable(
-                name: "UserOffers");
+                name: "ShopOffers");
 
             migrationBuilder.DropTable(
                 name: "Offers");

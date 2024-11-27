@@ -51,7 +51,7 @@ namespace Backend.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim("UserId", user.Id.ToString()),
-                new Claim("IsEnterprise", user.IsEnterprise.ToString())
+                // new Claim("IsEnterprise", user.IsEnterprise.ToString())
             };
             // clau a appsettings.json
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

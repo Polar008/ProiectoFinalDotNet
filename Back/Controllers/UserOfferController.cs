@@ -54,7 +54,10 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUserOffer(UserOfferDto userOfferDto)
         {
-            var userExists = await _context.Users.AnyAsync(u => u.Id == userOfferDto.UserId);
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            int userId = Int32.Parse(userIdClaim);
+
+            var userExists = await _context.Users.AnyAsync(u => u.Id == userId);
             if (!userExists)
             {
                 return BadRequest(new { Message = "The user does not exist." });
@@ -66,22 +69,9 @@ namespace Backend.Controllers
                 return BadRequest(new { Message = "The offer does not exist." });
             }
 
-            // var offer = await _context.Offers
-            //                           .FirstOrDefaultAsync(o => o.Id == userOfferDto.OfferId);
-
-            // if (offer == null)
-            // {
-            //     return NotFound(new { Message = "Offer not found." });
-            // }
-
-            // if (offer.CharityId != userOfferDto.UserId) 
-            // {
-            //     return BadRequest(new { Message = "The user does not match the owner of the offer." });
-            // }
-
             var userOffer = new UserOffer
             {
-                UserId = userOfferDto.UserId,
+                UserId = userId,
                 OfferId = userOfferDto.OfferId
             };
 
@@ -150,7 +140,6 @@ namespace Backend.Controllers
         [HttpGet("GetUsersByOffer/{offerId}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersByOffer(int offerId)
         {
-            // Buscar los usuarios asociados a la oferta
             var userOffers = await _context.UserOffers
                 .Where(uo => uo.OfferId == offerId)
                 .Include(uo => uo.User)
@@ -164,6 +153,27 @@ namespace Backend.Controllers
 
             return Ok(userOffers);
         }
+
+        [HttpDelete("Unsubscribe/{offerId}")]
+        public async Task<IActionResult> Unsubscribe(int offerId)
+        {
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            int userId = Int32.Parse(userIdClaim);
+
+            var userOffer = await _context.UserOffers
+                .FirstOrDefaultAsync(uo => uo.UserId == userId && uo.OfferId == offerId);
+
+            if (userOffer == null)
+            {
+                return NotFound(new { Message = "No relationship found for the provided UserId and OfferId." });
+            }
+
+            _context.UserOffers.Remove(userOffer);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Unsubscribed successfully." });
+        }
+
 
         private bool UserOfferExists(int id)
         {
