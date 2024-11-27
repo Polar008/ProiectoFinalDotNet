@@ -48,7 +48,7 @@ function Offer() {
                     <Col xs={1} lg={1} className="text-left">
                         <FontAwesomeIcon icon={faMapMarkerAlt} />
                     </Col>
-                    <Col xs={11} lg={2} className="text-left">
+                    <Col xs={11} className="text-left">
                         <p className="lead">{offer.province?.name + ", " + offer.city + ", " + offer.street}</p>
                     </Col>
                 </Row>
@@ -56,7 +56,7 @@ function Offer() {
                     <Col xs={1} lg={1} className="text-left">
                         <FontAwesomeIcon icon={faBuilding} />
                     </Col>
-                    <Col xs={3} lg={2} className="text-left">
+                    <Col xs={10} className="text-left">
                         <p className="lead">{offer.charity?.name}</p>
                     </Col>
                 </Row>
@@ -78,7 +78,6 @@ function Offer() {
                 <div className="d-grid gap-2">
                     <Button variant="success" size="lg">Join</Button>
                 </div>
-
             </Container>
         </>
     )
