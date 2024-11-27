@@ -1,10 +1,11 @@
 const URL = 'http://26.147.198.13:5058/api/shopOffers';
 
-export const getShopOffers = () => {
+export const getShopOffers = (token) => {
     const options = {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         }
     }
 

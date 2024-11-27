@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import { getOffers } from "../../controllers/OfferController";
 import SearchBar from "../elements/SearchBar";
 import NavBar from "../elements/NavBar";
 import { useNavigate } from "react-router-dom";
+import ContextUser from "../../controllers/ContextUser";
 
 function Home() {
     const [offers, setOffers] = useState([]);
     const navigate = useNavigate()
+    const { jwt } = useContext(ContextUser)
 
     useEffect(() => {
-        getOffers()
+        getOffers(jwt)
             .then(o => setOffers(o))
     }, [])
 

@@ -3,27 +3,33 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    function handleOnClickRegister() {
-        navigate("/register");
-    }
+  function saveJwtToStorage(jwt){
+    var jsonData = JSON.stringify(jwt);
+    localStorage.setItem("storageJwt", jsonData);
+  }
 
-    function handleOnClickLogin() {
-        navigate("/");
-    }
+  function handleOnClickRegister() {
+    navigate("/register");
+  }
+
+  function handleOnClickLogin() {
+    saveJwtToStorage("secureToken");
+    navigate("/");
+  }
 
   return (
     <>
       <h1>Login</h1>
       <Form>
-        <Form.Group className="mb-3" controlId="formGroupEmail">
+        <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control type="Email" placeholder="Email" />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formGroupPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+        <Form.Group className="mb-3" controlId="password">
+          <Form.Label>Contraseña</Form.Label>
+          <Form.Control type="password" placeholder="Contraseña" />
         </Form.Group>
         <Button variant="primary" size="lg" onClick={handleOnClickLogin}>
           Iniciar sesion
