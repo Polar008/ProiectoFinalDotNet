@@ -4,13 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace Backend.Models
 {
-    public class Offer
+    public class CreateOfferDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
-        [MaxLength(150)]
         public string Title { get; set; } = string.Empty;
 
         [Required]
@@ -20,30 +16,16 @@ namespace Backend.Models
         public int Capacity { get; set; }
 
         [Required]
-        [ForeignKey("Charity")]
         public int CharityId { get; set; }
 
-        [JsonIgnore]
-        public User Charity { get; set; } = null!;
-
         [Required]
-        [ForeignKey("Province")]
         public int ProvinceId { get; set; }
 
-        [JsonIgnore]
-        public Province Province { get; set; } = null!;
-
         [Required]
-        [MaxLength(150)]
         public string Street { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(100)]
         public string City { get; set; } = string.Empty;
-
-        [JsonIgnore]
-        public ICollection<UserOffer> UserOffers { get; set; } = new List<UserOffer>();
     }
-
 
 }

@@ -117,6 +117,76 @@ public class Program
 
                 }
 
+                if (!db.Provinces.Any(u => u.Name == "Lleida"))
+                {
+                    var province1 = new Province
+                    {
+                        Name = "Lleida",
+                        Code = "25200"
+                    };
+                    db.Provinces.Add(province1);
+                    db.SaveChanges();
+                }
+
+                if (!db.Provinces.Any(u => u.Name == "Madrid"))
+                {
+                    var province2 = new Province
+                    {
+                        Name = "Madrid",
+                        Code = "10200"
+                    };
+                    db.Provinces.Add(province2);
+                    db.SaveChanges();
+                }
+
+
+                if (!db.Offers.Any(u => u.Title == "Computación Gráfica"))
+                {
+                    var createOfferDto1 = new Offer
+                    {
+                        Title = "Computación Gráfica",
+                        Description = "Test 1",
+                        CharityId = 1,
+                        ProvinceId = 1,
+                        Capacity = 20,
+                        Street = "Avinguda Test",
+                        City = "Barcelona"
+                    };
+                    db.Offers.Add(createOfferDto1);
+                    db.SaveChanges();
+                }
+
+                if (!db.Offers.Any(u => u.Title == ".NET"))
+                {
+                    var createOfferDto1 = new Offer
+                    {
+                        Title = ".NET",
+                        Description = "Test 2",
+                        CharityId = 1,
+                        ProvinceId = 1,
+                        Capacity = 10,
+                        Street = "Avinguda Test",
+                        City = "Barcelona"
+                    };
+                    db.Offers.Add(createOfferDto1);
+                    db.SaveChanges();
+                }
+
+                 if (!db.Offers.Any(u => u.Title == "AI"))
+                {
+                    var createOfferDto1 = new Offer
+                    {
+                        Title = "AI",
+                        Description = "Fine Tuning",
+                        CharityId = 2,
+                        ProvinceId = 2,
+                        Capacity = 3,
+                        Street = "Avinguda Test",
+                        City = "Barcelona"
+                    };
+                    db.Offers.Add(createOfferDto1);
+                    db.SaveChanges();
+                }
 
                 db.SaveChanges();
             }

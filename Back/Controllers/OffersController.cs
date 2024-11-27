@@ -37,7 +37,7 @@ namespace Backend.Controllers
 						Id = o.Charity.Id,
 						Name = o.Charity.Name,
 					},
-					Capacity = o.Capacity,
+					// Capacity = o.Capacity,
 					Street = o.Street,
 					City = o.City,
 					Province = new ProvinceDto
@@ -55,13 +55,13 @@ namespace Backend.Controllers
 
 		// GET: api/Offers/5
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Offer>> GetOffer(int id)
+		public async Task<ActionResult<OfferWithUsersDto>> GetOffer(int id)
 		{
 			var offer = await _context.Offers
 				.Include(o => o.Province)
 				.Include(o => o.Charity)
 				.Where(o => o.Id == id)
-				.Select(o => new OfferDto
+				.Select(o => new OfferWithUsersDto
 				{
 					Id = o.Id,
 					Title = o.Title,
@@ -72,6 +72,11 @@ namespace Backend.Controllers
 						Id = o.Charity.Id,
 						Name = o.Charity.Name,
 					},
+					Enrolleds = o.UserOffers.Select(uo => new UserDto
+					{
+						Id = uo.User.Id,
+						Name = uo.User.Name
+					}).ToList(),
 					Capacity = o.Capacity,
 					Street = o.Street,
 					City = o.City,
@@ -88,6 +93,19 @@ namespace Backend.Controllers
 			{
 				return NotFound(new { Message = $"Offer with ID not found: {id}" });
 			}
+
+
+			var users = await _context.UserOffers
+				.Where(uo => uo.OfferId == id)
+				.Include(uo => uo.User)
+				.Select(uo => new UserDto
+				{
+					Id = uo.User.Id,
+					Name = uo.User.Name,
+				})
+				.ToListAsync();
+
+			offer.Enrolleds = users;
 
 			return Ok(offer);
 		}
@@ -126,13 +144,36 @@ namespace Backend.Controllers
 		// POST: api/Offers
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 		[HttpPost]
-		public async Task<ActionResult<Offer>> PostOffer(Offer offer)
+		public async Task<ActionResult<Offer>> PostOffer([FromBody] CreateOfferDto createOfferDto)
 		{
+			if (!_context.Users.Any(u => u.Id == createOfferDto.CharityId))
+			{
+				return BadRequest(new { Message = "Invalid CharityId" });
+			}
+
+			if (!_context.Provinces.Any(p => p.Id == createOfferDto.ProvinceId))
+			{
+				return BadRequest(new { Message = "Invalid ProvinceId" });
+			}
+
+			var offer = new Offer
+			{
+				Title = createOfferDto.Title,
+				Description = createOfferDto.Description,
+				ImgBanner = createOfferDto.ImgBanner,
+				Capacity = createOfferDto.Capacity,
+				CharityId = createOfferDto.CharityId,
+				ProvinceId = createOfferDto.ProvinceId,
+				Street = createOfferDto.Street,
+				City = createOfferDto.City
+			};
+
 			_context.Offers.Add(offer);
 			await _context.SaveChangesAsync();
 
-			return CreatedAtAction("GetOffer", new { id = offer.Id }, offer);
+			return CreatedAtAction(nameof(GetOffer), new { id = offer.Id }, offer);
 		}
+
 
 		// DELETE: api/Offers/5
 		[HttpDelete("{id}")]

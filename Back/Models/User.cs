@@ -35,5 +35,7 @@ namespace Backend.Models
         public string PostalCode { get; set; } = string.Empty;
 
         public ICollection<Offer> Offers { get; set; } = new List<Offer>();
+
+        public ICollection<UserOffer> UserOffers { get; set; } = new List<UserOffer>();
     }
 }
