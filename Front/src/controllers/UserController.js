@@ -1,12 +1,13 @@
-const URL = 'http:26.147.198.13/api/users';
+const URL = 'http://26.147.198.13:5058/api/users';
 
-export const uploadImage = (imageFile) => {
-    const formData = new FormData();
-    formData.append("image", imageFile);
+export const createUser = (formData) => {
 
     const options = {
         method: "POST",
-        body: formData, // Send FormData directly
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
     };
 
     return fetch(URL, options)

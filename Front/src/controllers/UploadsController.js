@@ -1,12 +1,12 @@
-const URL = "http://26.147.198.13/api/upload";
+const URL = "http://26.147.198.13:5058/api/upload";
 
 export const uploadImage = (imageFile) => {
   const formData = new FormData();
-  formData.append("image", imageFile);
+  formData.append("file", imageFile);
 
   const options = {
     method: "POST",
-    body: formData, // Send FormData directly
+    body: formData,
   };
 
   return fetch(URL, options)

@@ -45,7 +45,7 @@ function Home() {
                       alt={`Card ${index + 1}`}
                     />
                     <Card.Body>
-                      <Card.Title>{c.title + " ID:" + c.id}</Card.Title>
+                      <Card.Title>{c.title}</Card.Title>
                       <Card.Text>{c.description}.</Card.Text>
                     </Card.Body>
                   </Card>
