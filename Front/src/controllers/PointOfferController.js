@@ -14,12 +14,13 @@ export const getShopOffers = (token) => {
         .catch(e => console.log(e));
 }
 
-export const getShopOffer = (id) => {
+export const getShopOffer = (id, token) => {
     
     const options = {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         }
     }
 
