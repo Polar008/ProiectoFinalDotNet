@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127164426_InitialCreate")]
+    [Migration("20241128204230_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -117,8 +117,6 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShopOfferId");
-
                     b.ToTable("Rewards");
                 });
 
@@ -204,9 +202,6 @@ namespace Backend.Migrations
                     b.Property<int>("OfferId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "OfferId");
 
                     b.HasIndex("OfferId");
@@ -231,17 +226,6 @@ namespace Backend.Migrations
                     b.Navigation("Charity");
 
                     b.Navigation("Province");
-                });
-
-            modelBuilder.Entity("Backend.Models.Reward", b =>
-                {
-                    b.HasOne("Backend.Models.ShopOffer", "ShopOffer")
-                        .WithMany()
-                        .HasForeignKey("ShopOfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShopOffer");
                 });
 
             modelBuilder.Entity("Backend.Models.UserOffer", b =>

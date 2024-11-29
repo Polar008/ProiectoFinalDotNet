@@ -6,11 +6,13 @@ using System.Text;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    // [Authorize]
     public class UploadController : ControllerBase
     {
         private readonly string _uploadsFolder;
@@ -55,7 +57,7 @@ namespace Backend.Controllers
 
                 // Retornar la URL para acceder al archivo
                 // var fileUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-                var fileUrl = $"uploads/{fileName}";
+                var fileUrl = $"{fileName}";
                 return Ok(new { Message = "File uploaded successfully.", FileUrl = fileUrl });
             }
             catch (Exception ex)

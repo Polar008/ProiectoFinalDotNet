@@ -114,8 +114,6 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShopOfferId");
-
                     b.ToTable("Rewards");
                 });
 
@@ -201,9 +199,6 @@ namespace Backend.Migrations
                     b.Property<int>("OfferId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "OfferId");
 
                     b.HasIndex("OfferId");
@@ -228,17 +223,6 @@ namespace Backend.Migrations
                     b.Navigation("Charity");
 
                     b.Navigation("Province");
-                });
-
-            modelBuilder.Entity("Backend.Models.Reward", b =>
-                {
-                    b.HasOne("Backend.Models.ShopOffer", "ShopOffer")
-                        .WithMany()
-                        .HasForeignKey("ShopOfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShopOffer");
                 });
 
             modelBuilder.Entity("Backend.Models.UserOffer", b =>

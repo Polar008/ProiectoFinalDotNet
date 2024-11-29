@@ -84,7 +84,7 @@ namespace Backend.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         // [AllowAnonymous]
         [HttpPost]
-        [AllowAnonymous] // Per accedir sense token a la creació de l'usuari
+        // [AllowAnonymous] // Per accedir sense token a la creació de l'usuari
         public async Task<IActionResult> Register(User user)
         {
             // Codificar la contrasenya
