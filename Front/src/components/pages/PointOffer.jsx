@@ -10,9 +10,10 @@ function PointOffer(){
     const { id } = useParams();
     const [pointOffer, setPointOffer] = useState({});
     const navigate = useNavigate();
+    var jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
     useEffect(() => {
-        getShopOffer(id)
+        getShopOffer(id, jwt)
             .then(o => setPointOffer(o))
     }, [])
 

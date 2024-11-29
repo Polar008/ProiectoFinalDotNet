@@ -8,12 +8,13 @@ function App() {
   const [jwt, setJwt] = useState("");
   const [points, setPoints] = useState(0);
   const [pfp, setPfp] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("Juli");
   const navigate = useNavigate();
 
+  const changeJwt = (val) => setJwt(val);
   const contextValues = {
     jwt,
-    setJwt,
+    changeJwt,
     points,
     setPoints,
     pfp,

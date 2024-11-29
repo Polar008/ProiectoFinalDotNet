@@ -8,9 +8,10 @@ import { getShopOffers } from "../../controllers/PointOfferController";
 function PointShop() {
     const [offers, setOffers] = useState([]);
     const navigate = useNavigate()
+    var jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
     useEffect(() => {
-        getShopOffers()
+        getShopOffers(jwt)
             .then(o => setOffers(o))
     }, [])
 

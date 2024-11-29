@@ -1,10 +1,11 @@
 const URL = 'http://localhost:5058/api/offers';
 
-export const getOffers = () => {
+export const getOffers = (token) => {
     const options = {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         }
     }
 
@@ -13,12 +14,13 @@ export const getOffers = () => {
         .catch(e => console.log(e));
 }
 
-export const getOffer = (id) => {
+export const getOffer = (id, token) => {
     
     const options = {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         }
     }
 
