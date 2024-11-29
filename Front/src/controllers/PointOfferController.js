@@ -1,4 +1,4 @@
-const URL = 'http://localhost:5058/api/shopOffers';
+const URL = 'http://26.147.198.13:5058/api/shopOffers';
 
 export const getShopOffers = (token) => {
     const options = {
