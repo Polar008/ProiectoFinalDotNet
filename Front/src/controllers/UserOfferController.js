@@ -1,4 +1,4 @@
-const URL = 'http://26.147.198.13:5058/api/userOffer';
+const URL = 'http://localhost:5058/api/userOffer';
 
 export const joinOffer = (token, offerId) => {
     const options = {

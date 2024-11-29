@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
+using NuGet.Protocol;
 
 namespace Backend.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class OffersController : ControllerBase
 	{
 		private readonly ApplicationDbContext _context;
@@ -22,10 +25,12 @@ namespace Backend.Controllers
 
 		// GET: api/Offers
 		[HttpGet]
-		public IActionResult GetOffers()
+		public async Task<IActionResult> GetOffers()
 		{
-			var offers = _context.Offers
-				.Include(o => o.Province).Include(o => o.Charity)
+			var offers = await _context.Offers
+				.Include(o => o.Province)
+				.Include(o => o.Charity)
+				.Where(o => _context.UserOffers.Count(uo => uo.OfferId == o.Id) < o.Capacity)
 				.Select(o => new OfferDto
 				{
 					Id = o.Id,
@@ -37,7 +42,6 @@ namespace Backend.Controllers
 						Id = o.Charity.Id,
 						Name = o.Charity.Name,
 					},
-					// Capacity = o.Capacity,
 					Street = o.Street,
 					City = o.City,
 					Province = new ProvinceDto
@@ -47,9 +51,60 @@ namespace Backend.Controllers
 						Name = o.Province.Name
 					}
 				})
-				.ToList();
+				.ToListAsync();
 
 			return Ok(offers);
+		}
+
+		[HttpGet("c")]
+		public async Task<IActionResult> GetOffers(string userPostalCode)
+		{
+			// Extraer los 2 primeros dígitos del código postal del usuario
+			var userPostalPrefix = userPostalCode.Substring(0, 2);
+
+			var offers = await _context.Offers
+				.Include(o => o.Province)
+				.Include(o => o.Charity)
+				.Where(o => _context.UserOffers.Count(uo => uo.OfferId == o.Id) < o.Capacity) // Filtrar por capacidad
+				.Select(o => new
+				{
+					Offer = o,
+					PostalPrefix = o.Province.Code.Substring(0, 2) // Obtener los 2 primeros dígitos del código postal de la oferta
+				})
+				.OrderByDescending(o => o.PostalPrefix == userPostalPrefix) // Priorizar coincidencias en los 2 primeros dígitos
+				.Take(20) // Limitar a 20 resultados
+				.Select(o => new OfferDto
+				{
+					Id = o.Offer.Id,
+					Title = o.Offer.Title,
+					Description = o.Offer.Description,
+					ImgBanner = o.Offer.ImgBanner,
+					Charity = new CharityDto
+					{
+						Id = o.Offer.Charity.Id,
+						Name = o.Offer.Charity.Name,
+					},
+					Street = o.Offer.Street,
+					City = o.Offer.City,
+					Province = new ProvinceDto
+					{
+						Id = o.Offer.Province.Id,
+						Code = o.Offer.Province.Code,
+						Name = o.Offer.Province.Name
+					}
+				})
+				.ToListAsync();
+
+			return Ok(offers);
+		}
+
+
+
+		[HttpGet("count/{id}")]
+		public async Task<ActionResult<OfferWithUsersDto>> GetCountUserOffer(int id)
+		{
+			var userCount = await _context.UserOffers.Where(uo => uo.OfferId == id).CountAsync();
+			return Content(userCount.ToJson());
 		}
 
 
@@ -95,17 +150,17 @@ namespace Backend.Controllers
 			}
 
 
-			var users = await _context.UserOffers
-				.Where(uo => uo.OfferId == id)
-				.Include(uo => uo.User)
-				.Select(uo => new UserDto
-				{
-					Id = uo.User.Id,
-					Name = uo.User.Name,
-				})
-				.ToListAsync();
+			// var users = await _context.UserOffers
+			// 	.Where(uo => uo.OfferId == id)
+			// 	.Include(uo => uo.User)
+			// 	.Select(uo => new UserDto
+			// 	{
+			// 		Id = uo.User.Id,
+			// 		Name = uo.User.Name,
+			// 	})
+			// 	.ToListAsync();
 
-			offer.Enrolleds = users;
+			// offer.Enrolleds = users;
 
 			return Ok(offer);
 		}

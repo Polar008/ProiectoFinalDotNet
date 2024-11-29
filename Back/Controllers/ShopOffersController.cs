@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ShopOffersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -24,7 +26,28 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ShopOffer>>> GetShopOffers()
         {
-            return await _context.ShopOffers.ToListAsync();
+            var shopOffers = await (from s in _context.ShopOffers
+                                    join r in _context.Rewards on s.Id equals r.ShopOfferId
+                                    where r.UserId == -1
+                                    select new
+                                    {
+                                        s.Id,
+                                        s.Title,
+                                        s.Description,
+                                        s.Cost
+                                    })
+                            .Distinct() // Asegura que no se repitan
+                            .ToListAsync();
+
+            var result = shopOffers.Select(s => new ShopOffer
+            {
+                Id = s.Id,
+                Title = s.Title,
+                Description = s.Description,
+                Cost = s.Cost
+            }).ToList();
+
+            return Ok(result);
         }
 
         // GET: api/ShopOffers/5
