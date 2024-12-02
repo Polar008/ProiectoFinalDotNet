@@ -56,6 +56,23 @@ namespace Backend.Controllers
 			return Ok(offers);
 		}
 
+		[HttpGet("search")]
+		public async Task<IActionResult> GetSearchOffers()
+		{
+			var offers = await _context.Offers
+				.Include(o => o.Province)
+				.Include(o => o.Charity)
+				.Where(o => _context.UserOffers.Count(uo => uo.OfferId == o.Id) < o.Capacity)
+				.Select(o => new OfferListSearchDto
+				{
+					Id = o.Id,
+					Title = o.Title,
+				})
+				.ToListAsync();
+
+			return Ok(offers);
+		}
+
 		[HttpGet("c")]
 		public async Task<IActionResult> GetOffers(string userPostalCode)
 		{
