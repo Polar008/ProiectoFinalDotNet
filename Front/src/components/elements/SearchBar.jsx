@@ -1,23 +1,40 @@
 import { Form, InputGroup, Button, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getOfferSearch } from "../../controllers/OfferController";
+import { useNavigate } from "react-router-dom";
+import { getShopOffersSearch } from "../../controllers/PointOfferController";
 
-function SearchBar() {
-  const [searchTerm, setSearchTerm] = useState("");
+/* eslint react/prop-types: 0 */
+function SearchBar({ location, isFilteredHome, isFilteredshop }) {
+  //const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const data = ["aaaaaaaaa", "abaaaaaaaaa", "acaaaaaaaaa"];
+  const [articles, setArticles] = useState([]);
+  //const data = ["aaaaaaaaa", "abaaaaaaaaa", "acaaaaaaaaa"];
+  var jwt = JSON.parse(localStorage.getItem("storageJwt"));
+  const navigate = useNavigate();
 
-  function handleSuggestionClick() {}
+  useEffect(() => {
+    if (location == "home") {
+      getOfferSearch(jwt).then((o) => setArticles(o));
+    } else if (location == "shop") {
+      getShopOffersSearch(jwt).then((o) => setArticles(o));
+    }
+  }, []);
+
+  function handleSuggestionClick(id) {
+    navigate("/offer/" + id);
+  }
 
   function handleInputChange(e) {
     const query = e.target.value;
-    setSearchTerm(query);
     if (query) {
-      const filtered = data.filter((item) =>
-        item.toLowerCase().includes(query.toLowerCase())
+      const filtered = articles.filter((item) =>
+        item.title.toLowerCase().includes(query.toLowerCase())
       );
+
       setFilteredData(filtered);
       console.log(filtered.length);
       if (filtered.length > 0) {
@@ -31,9 +48,25 @@ function SearchBar() {
     }
   }
 
+  function handleButtonSearch() {
+    let ids = [];
+    filteredData.forEach((i) => ids.push(i));
+    if(location == "home"){
+      isFilteredHome(ids);
+    }else if(location == "shop"){
+      isFilteredshop(ids);
+    }
+    setShowDropdown(false);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    handleButtonSearch();
+  }
+
   return (
     <div className="search-bar-container">
-      <Form className="d-flex">
+      <Form className="d-flex" onSubmit={handleSubmit}>
         <InputGroup>
           <Form.Control
             type="search"
@@ -41,7 +74,7 @@ function SearchBar() {
             aria-label="Search"
             onChange={handleInputChange}
           />
-          <Button variant="outline-primary">
+          <Button variant="outline-primary" onClick={handleButtonSearch}>
             <FontAwesomeIcon icon={faSearch} />
           </Button>
         </InputGroup>
@@ -50,9 +83,9 @@ function SearchBar() {
             {filteredData.map((item, index) => (
               <Dropdown.Item
                 key={index}
-                onClick={() => handleSuggestionClick(item)}
+                onClick={() => handleSuggestionClick(item.id)}
               >
-                {item}
+                {item.title}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
@@ -61,4 +94,5 @@ function SearchBar() {
     </div>
   );
 }
+
 export default SearchBar;

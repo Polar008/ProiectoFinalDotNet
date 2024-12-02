@@ -15,26 +15,37 @@ function Offer() {
   const [offer, setOffer] = useState(null);
   const navigate = useNavigate();
   var jwt = JSON.parse(localStorage.getItem("storageJwt"));
+  const [time, setTime] = useState(0);
+  const [isBlack, setIsBlack] = useState(false);
 
   const [isJoined, setIsJoined] = useState(false);
 
   useEffect(() => {
-    getOffer(id, jwt)
-      .then((o) => setOffer(o));
+    getOffer(id, jwt).then((o) => setOffer(o));
     console.log(offer);
+    setTime(time + 1);
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     checkIfJoined();
-  }, [offer])
+  }, [offer]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsBlack(!isBlack);
+      setTime(time + 1);
+    }, 10);
+  }, [time]);
 
   function checkIfJoined() {
     let decodedToken = decodeJwt(jwt);
-    if (offer != null && offer.enrolleds.find(element => element.id == decodedToken.UserId)) {
+    if (
+      offer != null &&
+      offer.enrolleds.find((element) => element.id == decodedToken.UserId)
+    ) {
       setIsJoined(true);
-      console.log("mamaguebo");
-    }else {
-      console.log(offer)
+    } else {
+      console.log(offer);
     }
   }
 
@@ -54,7 +65,7 @@ function Offer() {
   }
 
   function tryJoinOffer() {
-    joinOffer(jwt ,offer.id);
+    joinOffer(jwt, offer.id);
   }
 
   return (
@@ -75,18 +86,33 @@ function Offer() {
                 }}
               >
                 <Image
-                  src="https://imgs.search.brave.com/F-BI6Qdc1yenyGLvo9uktjZYHdbVkB6e_XD16qZD-hw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvODQ4/NTQ5Mjg2L3Bob3Rv/L2RyZWFtLWhvbWUt/bHV4dXJ5LWhvdXNl/LXN1Y2Nlc3MuanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPWNq/aG9OcW9tTlR4Z1lX/eHVaOUV2NVB4Wmg2/V1k5NnZ2REdmM0hs/LTd4LVU9"
+                  src={`http://26.147.198.13:5058/uploads/${offer.imgBanner}`}
                   alt="Example"
                   rounded
                   fluid
                   className="mb-4"
                 />
+                <div
+                  className="arrowOffer"
+                  style={{
+                    backgroundColor: "#ffffff", // Black background for contrast
+                    color: "#fff", // White icon color
+                    width: "20px", // Icon container size
+                    height: "20px", // Icon container size
+                    display: "flex", // Flexbox to center the icon
+                    alignItems: "center", // Center the icon vertically
+                    justifyContent: "center", // Center the icon horizontally
+                    borderRadius: "50%", // Make the container a circle
+                  }}
+                >
                 <FontAwesomeIcon
                   icon={faArrowLeft}
-                  className="arrowOffer"
-                  style={{ color: "black" }}
+                  
+                  style={{ color:"black" }}
                   onClick={handleArrowOnClick}
                 />
+
+                </div>
               </div>
             </Col>
           </Row>

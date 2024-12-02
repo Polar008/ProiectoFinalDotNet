@@ -10,6 +10,8 @@ import PointShop from "./components/pages/PointShop.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Offer from "./components/pages/Offer.jsx";
 import PointOffer from "./components/pages/PointOffer.jsx";
+import CreateOffer from "./components/pages/CreateOffer.jsx";
+import EditOffer from "./components/pages/EditOffer.jsx";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -25,6 +27,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/register" element={<Register />} />
           <Route path="/offer/:id" element={<Offer />} />
           <Route path="/shopOffer/:id" element={<PointOffer />} />
+          <Route path="/offer/register" element={<CreateOffer />} />
+          <Route path="/offer/edit/:id" element={<EditOffer />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -19,3 +19,18 @@ export const createUser = (formData) => {
         })
         .catch(error => console.error("Error uploading image:", error));
 };
+
+export const getUserData = (token) => {
+    
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    return fetch(URL+"/", options)
+        .then(x => x.json())
+        .catch(e => console.log(e));
+}

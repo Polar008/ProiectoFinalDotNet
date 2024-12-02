@@ -37,13 +37,13 @@ function Register() {
       };
       console.log(datos)
 
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("password", password);
-      formData.append("photo", String(photoLink));
-      formData.append("dateOfBirth", date);
-      formData.append("postalCode", postalCode);
+      // const formData = new FormData();
+      // formData.append("name", name);
+      // formData.append("email", email);
+      // formData.append("password", password);
+      // formData.append("photo", String(photoLink));
+      // formData.append("dateOfBirth", date);
+      // formData.append("postalCode", postalCode);
 
       createUser(datos);
       navigate("/login");
