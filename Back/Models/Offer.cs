@@ -24,14 +24,14 @@ namespace Backend.Models
         public int CharityId { get; set; }
 
         [JsonIgnore]
-        public User Charity { get; set; } = null!;
+        public User? Charity { get; set; }
 
         [Required]
         [ForeignKey("Province")]
         public int ProvinceId { get; set; }
 
         [JsonIgnore]
-        public Province Province { get; set; } = null!;
+        public Province? Province { get; set; }
 
         [Required]
         [MaxLength(150)]

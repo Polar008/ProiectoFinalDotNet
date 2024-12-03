@@ -50,6 +50,29 @@ namespace Backend.Controllers
             return Ok(result);
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<ShopOfferListSearchDto>>> GetShopOfferSearch()
+        {
+            var shopOffers = await (from s in _context.ShopOffers
+                                    join r in _context.Rewards on s.Id equals r.ShopOfferId
+                                    where r.UserId == -1
+                                    select new
+                                    {
+                                        s.Id,
+                                        s.Title
+                                    })
+                            .Distinct() // Asegura que no se repitan
+                            .ToListAsync();
+
+            var result = shopOffers.Select(s => new ShopOfferListSearchDto
+            {
+                Id = s.Id,
+                Title = s.Title
+            }).ToList();
+
+            return Ok(result);
+        }
+
         // GET: api/ShopOffers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ShopOffer>> GetShopOffer(int id)
