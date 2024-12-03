@@ -10,6 +10,9 @@ import Button from "react-bootstrap/Button";
 import { joinOffer } from "../../controllers/UserOfferController";
 import { jwtDecode } from "jwt-decode";
 
+
+import { URL } from "../../config";
+
 function Offer() {
   const { id } = useParams();
   const [offer, setOffer] = useState(null);
@@ -48,7 +51,6 @@ function Offer() {
       console.log(offer);
     }
   }
-
   function decodeJwt(token) {
     try {
       const decodedToken = jwtDecode(token);
@@ -86,7 +88,7 @@ function Offer() {
                 }}
               >
                 <Image
-                  src={`http://26.147.198.13:5058/uploads/${offer.imgBanner}`}
+                  src={`${URL}/uploads/${offer.imgBanner}`}
                   alt="Example"
                   rounded
                   fluid

@@ -115,7 +115,11 @@ namespace Backend.Controllers
 			return Ok(offers);
 		}
 
-
+		[HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetOffersOfUser(int userId){
+			var of = await _context.Offers.Where(o => o.UserOffers.Where(uo => uo.UserId == userId) != null).ToListAsync();
+            return Ok(of);
+		}
 
 		[HttpGet("count/{id}")]
 		public async Task<ActionResult<OfferWithUsersDto>> GetCountUserOffer(int id)

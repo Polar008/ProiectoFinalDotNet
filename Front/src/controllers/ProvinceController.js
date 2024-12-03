@@ -1,4 +1,6 @@
-const URL = "http://26.147.198.13:5058/api/provinces";
+import { BaseUrl } from "../config";
+
+const URL = BaseUrl + "provinces";
 
 export const getProvinces = (token) => {
   const options = {

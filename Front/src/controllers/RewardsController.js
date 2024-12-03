@@ -1,8 +1,8 @@
 import { BaseUrl } from "../config";
 
-const URL = BaseUrl + "offers";
+const URL = BaseUrl + "rewards";
 
-export const getOffers = (token) => {
+export const getUserRewards = (id, token) => {
   const options = {
     method: "GET",
     headers: {
@@ -11,12 +11,13 @@ export const getOffers = (token) => {
     },
   };
 
-  return fetch(URL, options)
+  return fetch(URL + "/user/" + id, options)
     .then((x) => x.json())
     .catch((e) => console.log(e));
 };
 
-export const createOfferApi = (offer, token) => {
+
+export const createRewardApi = (reward, token) => {
   try {
     const options = {
       method: "POST",
@@ -24,7 +25,7 @@ export const createOfferApi = (offer, token) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(offer),
+      body: JSON.stringify(reward),
     };
 
     return fetch(URL, options)
@@ -36,21 +37,8 @@ export const createOfferApi = (offer, token) => {
   }
 };
 
-export const getOffer = (id, token) => {
-  const options = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
 
-  return fetch(URL + "/" + id, options)
-    .then((x) => x.json())
-    .catch((e) => console.log(e));
-};
-
-export const getOfferByIdApi = (id, token) => {
+export const getRewardApi = (id, token) => {
   try {
     const options = {
       method: "GET",
@@ -69,7 +57,7 @@ export const getOfferByIdApi = (id, token) => {
   }
 };
 
-export const updateOfferApi = (id, updatedOffer, token) => {
+export const updateRewardApi = (id, updatedReward, token) => {
   try {
     const options = {
       method: "PUT",
@@ -77,7 +65,7 @@ export const updateOfferApi = (id, updatedOffer, token) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(updatedOffer),
+      body: JSON.stringify(updatedReward),
     };
 
     return fetch(URL + "/" + id, options);
@@ -85,18 +73,4 @@ export const updateOfferApi = (id, updatedOffer, token) => {
     console.error("Error: ", e);
     return 0;
   }
-};
-
-export const getOfferSearch = (token) => {
-  const options = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  return fetch(URL + "/search", options)
-    .then((x) => x.json())
-    .catch((e) => console.log(e));
 };

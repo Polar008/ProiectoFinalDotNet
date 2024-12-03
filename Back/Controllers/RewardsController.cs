@@ -88,6 +88,13 @@ namespace Backend.Controllers
             return CreatedAtAction("GetReward", new { id = reward.Id }, reward);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> UserRewards(int userId)
+        {
+            var reward = await _context.Rewards.Where(r => r.UserId == userId).ToListAsync();
+            return Ok(reward);
+        }
+
         [HttpPut("use/{rewardId}/{userId}")]
         public async Task<IActionResult> UseReward(int rewardId, int userId)
         {

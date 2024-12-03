@@ -45,6 +45,8 @@ function CreateOffer() {
   async function handleCreateOffer() {
     const decodedToken = jwtDecode(jwt);
 
+    console.log(decodedToken);
+
     const uploadedImage = await uploadImage(image);
     const photoLink = uploadedImage.fileUrl;
 
@@ -60,8 +62,6 @@ function CreateOffer() {
     };
 
     createOfferApi(offer, jwt);
-
-    console.log(offer);
   }
 
   return (

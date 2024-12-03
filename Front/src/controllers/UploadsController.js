@@ -1,4 +1,6 @@
-const URL = "http://26.147.198.13:5058/api/upload";
+import { BaseUrl } from "../config";
+
+const URL = BaseUrl + "upload";
 
 export const uploadImage = (imageFile) => {
   const formData = new FormData();

@@ -13,6 +13,8 @@ import PointOffer from "./components/pages/PointOffer.jsx";
 import CreateOffer from "./components/pages/CreateOffer.jsx";
 import EditOffer from "./components/pages/EditOffer.jsx";
 import App from "./App.jsx";
+import ProfileCharity from "./components/pages/ProfileCharity.jsx";
+import ProfileEnterprise from "./components/pages/ProfileEnterprise.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -24,6 +26,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/register" element={<Register />} />
           <Route path="/pointShop" element={<PointShop />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profileCha" element={<ProfileCharity />} />
+          <Route path="/profileEnt" element={<ProfileEnterprise />} />
           <Route path="/register" element={<Register />} />
           <Route path="/offer/:id" element={<Offer />} />
           <Route path="/shopOffer/:id" element={<PointOffer />} />

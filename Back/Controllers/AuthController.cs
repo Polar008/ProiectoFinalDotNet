@@ -51,6 +51,8 @@ namespace Backend.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim("UserId", user.Id.ToString()),
+                new Claim("IsCharity", user.IsCharity.ToString()),
+                new Claim("IsEnterprise", user.IsEnterprise.ToString())
                 // new Claim("IsEnterprise", user.IsEnterprise.ToString())
             };
             // clau a appsettings.json
