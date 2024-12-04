@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import "./App.css";
 import ContextUser from "./controllers/ContextUser";
 import { useEffect, useState } from "react";
+import { tokenCheck } from "./controllers/AuthController";
 
 function App() {
   const [jwt, setJwt] = useState("");
@@ -23,14 +24,25 @@ function App() {
     setUserName,
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     var token = localStorage.getItem("storageJwt");
     if (token) {
-      setJwt(JSON.parse(token));
+      token = JSON.parse(token);
+      tokenCheck(token)
+        .then((x) => {
+          if (x.status == 401) {
+            localStorage.removeItem("storageJwt");
+            navigate("/login");
+          }else{
+            setJwt(JSON.parse(token));
+          }
+
+          console.log("All god bro, come in" + x.status);
+        });
     } else {
       navigate("/login");
     }
-  }, [])
+  }, []);
 
   return (
     <>

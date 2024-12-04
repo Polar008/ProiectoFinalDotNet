@@ -4,6 +4,7 @@ namespace Backend.Models
     {
         public int UserId { get; set; }
         public int OfferId { get; set; }
+        
     }
 
 }

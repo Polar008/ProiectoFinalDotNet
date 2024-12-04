@@ -100,3 +100,17 @@ export const getOfferSearch = (token) => {
     .then((x) => x.json())
     .catch((e) => console.log(e));
 };
+
+export const getUserOffers = (id, token) => {
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return fetch(URL + "/user/" + id, options)
+    .then((x) => x.json())
+    .catch((e) => console.log(e));
+};

@@ -16,7 +16,6 @@ export const getUserRewards = (id, token) => {
     .catch((e) => console.log(e));
 };
 
-
 export const createRewardApi = (reward, token) => {
   try {
     const options = {
@@ -37,6 +36,41 @@ export const createRewardApi = (reward, token) => {
   }
 };
 
+export const generateRewardApi = (userShopOffer, token) => {
+  try {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(userShopOffer),
+    };
+
+    return fetch(URL + "/generates", options).catch((e) => console.log(e));
+  } catch (e) {
+    console.error("Error: ", e);
+    return 0;
+  }
+};
+
+export const buyRewardApi = (userShopOffer, token) => {
+  try {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(userShopOffer),
+    };
+
+    return fetch(URL + "/buy", options).catch((e) => console.log(e));
+  } catch (e) {
+    console.error("Error: ", e);
+    return 0;
+  }
+};
 
 export const getRewardApi = (id, token) => {
   try {

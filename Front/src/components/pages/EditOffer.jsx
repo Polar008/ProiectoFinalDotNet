@@ -9,12 +9,14 @@ import { getProvinces } from "../../controllers/ProvinceController";
 import { uploadImage } from "../../controllers/UploadsController";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { jwtDecode } from "jwt-decode";
-import { useParams } from "react-router-dom"; // Para obtener el ID desde la URL
+import { useParams } from "react-router-dom";
+
+import { URL } from "../../config";
 
 function EditOffer() {
-  const { id } = useParams(); // Captura el ID de la oferta desde la URL
+  const { id } = useParams();
   const [provinces, setProvinces] = useState([]);
-  const [offerData, setOfferData] = useState(null); // Para cargar los datos existentes
+  const [offerData, setOfferData] = useState(null);
 
   const jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
@@ -47,7 +49,7 @@ function EditOffer() {
         streetRef.current.value = data.street;
         cityRef.current.value = data.city;
         provinceIdRef.current.value = data.province.id;
-        setPreviewUrl(`http://26.147.198.13:5058/uploads/${data.imgBanner}`);
+        setPreviewUrl(`${URL}/uploads/${data.imgBanner}`);
       })
       .catch(() => {});
   }, [id]);

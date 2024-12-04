@@ -88,21 +88,27 @@ namespace Backend.Controllers
             return CreatedAtAction("GetReward", new { id = reward.Id }, reward);
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> UserRewards(int userId)
+        [HttpGet("user")]
+        public async Task<IActionResult> UserRewards()
         {
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            int userId = Int32.Parse(userIdClaim);
+
             var reward = await _context.Rewards.Where(r => r.UserId == userId).ToListAsync();
             return Ok(reward);
         }
 
-        [HttpPut("use/{rewardId}/{userId}")]
-        public async Task<IActionResult> UseReward(int rewardId, int userId)
+        [HttpPut("use/{rewardId}")]
+        public async Task<IActionResult> UseReward(int rewardId)
         {
             var reward = await _context.Rewards.FindAsync(rewardId);
             if (reward == null)
             {
                 return NotFound(new { Message = $"Reward with ID {rewardId} not found." });
             }
+
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            int userId = Int32.Parse(userIdClaim);
 
             var user = await _context.Users.AnyAsync(u => u.Id == userId);
             if (!user)
@@ -117,9 +123,47 @@ namespace Backend.Controllers
             return Ok(new { Message = "Reward updated successfully.", Reward = reward });
         }
 
-
-        [HttpPost("generate")]
+        [HttpPost("generates")]
         public async Task<ActionResult<Reward>> GenerateReward(UserShopOfferDto userShopOfferDto)
+        {
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            int userId = Int32.Parse(userIdClaim);
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return BadRequest(new { Message = "The user does not exist." });
+            }
+
+            var shopOffer = await _context.ShopOffers.FindAsync(userShopOfferDto.ShopOfferId);
+            if (shopOffer == null)
+            {
+                return BadRequest(new { Message = "The shopOffer does not exist." });
+            }
+
+            user.Points -= shopOffer.Cost;
+            _context.Users.Update(user);
+
+            int count = userShopOfferDto.rewardsCount;
+            for (int i = 0; i < count; i++)
+            {
+                Reward newReward = new Reward
+                {
+                    ReedemableCode = Guid.NewGuid().ToString(),
+                    UserId = -1,
+                    ShopOfferId = shopOffer.Id
+                };
+
+                _context.Rewards.Add(newReward);
+            }
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+
+        [HttpPost("buy")]
+        public async Task<ActionResult<Reward>> BuyReward(UserShopOfferDto userShopOfferDto)
         {
             var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
             int userId = Int32.Parse(userIdClaim);
@@ -142,6 +186,7 @@ namespace Backend.Controllers
             }
 
             user.Points -= shopOffer.Cost;
+            _context.Users.Update(user);
 
             Reward newReward = new Reward
             {
@@ -150,11 +195,10 @@ namespace Backend.Controllers
                 ShopOfferId = shopOffer.Id
             };
 
-            _context.Users.Update(user);
             _context.Rewards.Add(newReward);
-
+            
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetReward", new { id = newReward.Id }, newReward);
+            return NoContent();
         }
 
 

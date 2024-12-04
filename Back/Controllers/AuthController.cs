@@ -6,6 +6,7 @@ using System.Text;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -24,6 +25,13 @@ namespace Backend.Controllers
             _context = context;
             _configuration = configuration;
             _passwordHasher = passwordHasher;
+        }
+
+        [HttpGet("token")]
+        [Authorize]
+        public async Task<IActionResult> CheckToken()
+        {
+            return Ok();
         }
 
         [HttpPost("login")]

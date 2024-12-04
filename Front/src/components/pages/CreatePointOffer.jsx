@@ -1,67 +1,54 @@
 import { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import { Container, Button, Image } from "react-bootstrap";
-import { createOfferApi } from "../../controllers/OfferController";
-import { getProvinces } from "../../controllers/ProvinceController";
-import { uploadImage } from "../../controllers/UploadsController";
+import {
+  createPointOfferApi,
+  getShopOffers,
+} from "../../controllers/PointOfferController";
+
+import { generateRewardApi } from "../../controllers/RewardsController";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { jwtDecode } from "jwt-decode";
 
 function CreatePointOffer() {
-  const [provinces, setProvinces] = useState([]);
-
   var jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
-  const provinceIdRef = useRef(null);
-  const capacityRef = useRef(null);
-  const streetRef = useRef(null);
-  const cityRef = useRef(null);
-
-  const [image, setImage] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const costRef = useRef(null);
+  const rewardCountRef = useRef(null);
 
   useEffect(() => {
-    getProvinces(jwt)
-      .then((o) => setProvinces(o))
-      .catch(() => {});
+    const fetchData = async () => {
+      const data = await getShopOffers(jwt);
+      console.log(data);
+    };
+
+    fetchData();
   }, []);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImage(file);
-
-      // Crear un FileReader per generar el preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewUrl(reader.result); // Actualitza la URL del preview
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  async function handleCreateOffer() {
+  async function handleCreatePointOffer() {
     const decodedToken = jwtDecode(jwt);
 
     console.log(decodedToken);
 
-    const uploadedImage = await uploadImage(image);
-    const photoLink = uploadedImage.fileUrl;
-
-    const offer = {
+    const pointOffer = {
       title: titleRef.current.value,
       description: descriptionRef.current.value,
-      charityId: decodedToken.UserId,
-      imgBanner: String(photoLink),
-      provinceId: provinceIdRef.current.value,
-      capacity: capacityRef.current.value,
-      street: streetRef.current.value,
-      city: cityRef.current.value,
+      cost: costRef.current.value,
     };
 
-    createOfferApi(offer, jwt);
+    const pointOfferResponse = await createPointOfferApi(pointOffer, jwt);
+    console.log(pointOfferResponse);
+
+    const userShopOffer = {
+      ShopOfferId: pointOfferResponse.id,
+      rewardsCount: rewardCountRef.current.value,
+    };
+    console.log(userShopOffer);
+
+    const generateRewardResponse = await generateRewardApi(userShopOffer, jwt);
+    console.log(generateRewardResponse);
   }
 
   return (
@@ -83,70 +70,25 @@ function CreatePointOffer() {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Capacidad</Form.Label>
+            <Form.Label>Costo</Form.Label>
             <Form.Control
               type="number"
-              placeholder="Ingresar capacidad"
-              ref={capacityRef}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Seleccionar imagen:</Form.Label>
-            {previewUrl && (
-              <div className="mb-3 text-center">
-                <Image
-                  src={previewUrl}
-                  alt="Preview"
-                  rounded
-                  fluid
-                  style={{ maxWidth: "100%", maxHeight: "300px" }}
-                />
-              </div>
-            )}
-            <Form.Control
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleImageChange}
-              required
+              placeholder="Ingresar costo"
+              ref={costRef}
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Calle</Form.Label>
+            <Form.Label>Cantidad de rewards</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Ingresar calle"
-              ref={streetRef}
+              type="number"
+              placeholder="Ingresar cantidad"
+              ref={rewardCountRef}
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Ciudad</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Ingresar ciudad"
-              ref={cityRef}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Provincia</Form.Label>
-            <Form.Select
-              aria-label="Default select example"
-              ref={provinceIdRef}
-            >
-              {provinces.map((c, index) => (
-                <option key={index} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-
-          <Button variant="primary" onClick={handleCreateOffer}>
-            Crear Oferta
+          <Button variant="primary" onClick={handleCreatePointOffer}>
+            Crear Punto de Oferta
           </Button>
         </Form>
       </Container>

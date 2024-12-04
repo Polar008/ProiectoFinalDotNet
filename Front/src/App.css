@@ -1,0 +1,143 @@
+/* General styles for the profile */
+.profile-container {
+    font-family: Arial, sans-serif;
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 16px;
+    background-color: #f5f5f5;
+  }
+  
+  /* Edit icon */
+  .edit-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #555;
+  }
+  
+  /* Profile header */
+  .profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .profile-header h1 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .profile-header h2 {
+    margin: 0;
+    font-size: 16px;
+    color: #777;
+  }
+  
+  .profile-details {
+    padding: 16px;
+    background-color: white;
+    margin-top: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-details h5 {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .profile-details h6 {
+    font-size: 12px;
+    color: #999;
+  }
+  
+  /* Tabs */
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 16px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px 0;
+  }
+  
+  .tabs h2,
+  .tabs h3 {
+    margin: 0;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .tabs .active {
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  /* Offers */
+  .offers-container {
+    padding: 16px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .offer-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .offer-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  .offer-item h3,
+  .offer-item h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .offer-item h4 {
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .offer-item .offer-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .offer-actions button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #007bff;
+  }
+  

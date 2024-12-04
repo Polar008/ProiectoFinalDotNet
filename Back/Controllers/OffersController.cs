@@ -117,7 +117,7 @@ namespace Backend.Controllers
 
 		[HttpGet("user/{userId}")]
         public async Task<IActionResult> GetOffersOfUser(int userId){
-			var of = await _context.Offers.Where(o => o.UserOffers.Where(uo => uo.UserId == userId) != null).ToListAsync();
+			var of = await _context.Offers.Where(o => o.UserOffers.Any(uo => uo.UserId == userId)).ToListAsync();
             return Ok(of);
 		}
 

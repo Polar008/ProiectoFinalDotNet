@@ -10,7 +10,6 @@ import Button from "react-bootstrap/Button";
 import { joinOffer } from "../../controllers/UserOfferController";
 import { jwtDecode } from "jwt-decode";
 
-
 import { URL } from "../../config";
 
 function Offer() {
@@ -67,7 +66,9 @@ function Offer() {
   }
 
   function tryJoinOffer() {
-    joinOffer(jwt, offer.id);
+    joinOffer(jwt, offer.id).then(() =>
+      getOffer(id, jwt).then((o) => setOffer(o))
+    );
   }
 
   return (
@@ -107,13 +108,11 @@ function Offer() {
                     borderRadius: "50%", // Make the container a circle
                   }}
                 >
-                <FontAwesomeIcon
-                  icon={faArrowLeft}
-                  
-                  style={{ color:"black" }}
-                  onClick={handleArrowOnClick}
-                />
-
+                  <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    style={{ color: "black" }}
+                    onClick={handleArrowOnClick}
+                  />
                 </div>
               </div>
             </Col>
