@@ -15,7 +15,6 @@ function Home() {
   var jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
   useEffect(() => {
-    console.log(jwt);
     getOffers(jwt)
       .then((o) => setOffers(o))
       .catch(() => {});

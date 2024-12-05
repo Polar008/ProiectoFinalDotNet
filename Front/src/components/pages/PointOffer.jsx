@@ -24,12 +24,12 @@ function PointOffer() {
   async function handleBuyPointOffer() {
     // const decodedToken = jwtDecode(jwt);
 
-    const userShopOffer = {
-      ShopOfferId: id,
-    };
-    console.log(userShopOffer);
+    // const userShopOffer = {
+    //   ShopOfferId: id,
+    // };
+    // console.log(userShopOffer);
 
-    const buyRewardResponse = await buyRewardApi(userShopOffer, jwt);
+    const buyRewardResponse = await buyRewardApi(id, jwt);
     console.log(buyRewardResponse);
   }
 
@@ -52,12 +52,25 @@ function PointOffer() {
                 fluid
                 className="mb-4"
               />
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                className="arrowOffer"
-                style={{ color: "black" }}
-                onClick={handleArrowOnClick}
-              />
+              <div
+                  className="arrowOffer"
+                  style={{
+                    backgroundColor: "#ffffff", // Black background for contrast
+                    color: "#fff", // White icon color
+                    width: "20px", // Icon container size
+                    height: "20px", // Icon container size
+                    display: "flex", // Flexbox to center the icon
+                    alignItems: "center", // Center the icon vertically
+                    justifyContent: "center", // Center the icon horizontally
+                    borderRadius: "50%", // Make the container a circle
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    style={{ color: "black" }}
+                    onClick={handleArrowOnClick}
+                  />
+                </div>
             </div>
           </Col>
         </Row>

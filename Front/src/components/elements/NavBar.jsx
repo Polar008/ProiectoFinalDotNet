@@ -24,6 +24,7 @@ function NavBar() {
   }
   useEffect(() => {
     const decoded = decodeJwt(jwt);
+    console.log(decoded.IsCharity +" "+decoded.IsEnterprise);
     if (decoded.IsCharity == "true") {
       setUserType("Charity");
     } else if (decoded.IsEnterprise == "true") {

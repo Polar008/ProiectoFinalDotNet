@@ -25,12 +25,13 @@ function Profile() {
 
   const [selection, setSelection] = useState("offers");
 
+  const [copyText, setCopyText] = useState("");
+
   const navigate = useNavigate();
 
   var jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
   useEffect(() => {
-    console.log(jwt);
     var decodedToken = decodeJwt(jwt);
 
     getUserOffers(decodedToken.UserId, jwt)
@@ -79,6 +80,21 @@ function Profile() {
     navigate("/offer/" + offerId);
   }
 
+  function copyCode(id) {
+    setCopyText(id);
+    copyToClipboard();
+  }
+
+  const copyToClipboard = async () => {
+    try {
+      console.log(copyText);
+      await navigator.clipboard.writeText("copyText");
+      alert('Text copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+
   function ActiveOffers() {
     return (
       <>
@@ -118,7 +134,7 @@ function Profile() {
       <>
         {rewards.length > 0 ? (
           rewards.map((r, index) => (
-            <Row key={index} onClick={() => navigateOffer(r.id)}>
+            <Row key={index} onClick={() => copyCode(r.reedemableCode)}>
               <Col xs={12}>
                 <h2>{r.reedemableCode}</h2>
               </Col>
@@ -142,18 +158,16 @@ function Profile() {
           <p>{email}</p>
 
           <h2>Contraseña</h2>
-          <p>{password}</p>
+          <p>*****</p>
 
           <h2>Codigo Postal</h2>
           <p>{postalCode}</p>
 
           <h2>Puntos:{points}</h2>
 
-          <button onClick={onUpgrade}>UPGRADE</button>
+          <button onClick={onUpgrade}>Mejorar</button>
 
-          <div onClick={onEdit} className="edit-icon">
-            <FontAwesomeIcon icon={faPen} />
-          </div>
+          <button onClick={onEdit}>Editar Perfil</button>
         </Row>
       </>
     );
