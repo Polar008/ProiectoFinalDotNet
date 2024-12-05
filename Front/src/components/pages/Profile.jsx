@@ -39,7 +39,7 @@ function Profile() {
       })
       .catch(() => {});
 
-    getUserRewards(decodedToken.UserId, jwt).then((o) => setRewards(o));
+    getUserRewards(jwt).then((o) => setRewards(o));
 
     getUserData(decodedToken.UserId, jwt).then((o) => {
       setName(o.name);

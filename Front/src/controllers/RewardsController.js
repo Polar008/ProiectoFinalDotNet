@@ -2,7 +2,7 @@ import { BaseUrl } from "../config";
 
 const URL = BaseUrl + "rewards";
 
-export const getUserRewards = (id, token) => {
+export const getUserRewards = (token) => {
   const options = {
     method: "GET",
     headers: {
@@ -11,7 +11,7 @@ export const getUserRewards = (id, token) => {
     },
   };
 
-  return fetch(URL + "/user/" + id, options)
+  return fetch(URL + "/user", options)
     .then((x) => x.json())
     .catch((e) => console.log(e));
 };
