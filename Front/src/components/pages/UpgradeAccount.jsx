@@ -1,7 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
-import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
-import InputMask from "react-input-mask";
+import { Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 function UpgradeAccount() {
@@ -73,73 +72,6 @@ function UpgradeAccount() {
             onChange={handleChange}
           />
         </FloatingLabel>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Numero de la targeta"
-          className="mb-3"
-        >
-          {/* <Form.Control
-            type="text"
-            placeholder="1234 5678 9012 3456"
-            name="cardNumber"
-            value={formData.cardNumber}
-            onChange={handleChange}
-          /> */}
-          <Form.Control
-          type="text"
-          placeholder="1234 5678 9012 3456"
-          {...register("cardNumber", {
-            required: "Card number is required.",
-            pattern: {
-              value: /^\d{16}$/,
-              message: "Card number must be 16 digits.",
-            },
-          })}
-        />
-        {errors.cardNumber && (
-          <p className="text-danger">{errors.cardNumber.message}</p>
-        )}
-        </FloatingLabel>
-      </Form.Group>
-
-      <Form.Group as={Row} className="mb-3">
-        <Col xs={6}>
-          <Form.Label>Data de caducidad</Form.Label>
-          <Form.Control
-              type="text"
-              placeholder="MM/YY"
-              {...register("expiryDate", {
-                required: "Expiration date is required.",
-                pattern: {
-                  value: /^(0[1-9]|1[0-2])\/\d{2}$/,
-                  message: "Expiration date must be in MM/YY format.",
-                },
-              })}
-            />
-            {errors.expiryDate && (
-              <p className="text-danger">{errors.expiryDate.message}</p>
-            )}
-          {/* <Form.Control
-            type="text"
-            placeholder="MM/YY"
-            name="expiryDate"
-            value={formData.expiryDate}
-            onChange={handleChange}
-          /> */}
-        </Col>
-        <Col xs={6}>
-          <Form.Label>CVV</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="123"
-            name="cvv"
-            value={formData.cvv}
-            onChange={handleChange}
-          />
-        </Col>
       </Form.Group>
     </Form>
   );
