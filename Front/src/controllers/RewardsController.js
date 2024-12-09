@@ -54,18 +54,20 @@ export const generateRewardApi = (userShopOffer, token) => {
   }
 };
 
-export const buyRewardApi = (userShopOffer, token) => {
+export const buyRewardApi = (shopOfferId, token) => {
   try {
     const options = {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(userShopOffer),
+      body: shopOfferId,
     };
 
-    return fetch(URL + "/buy", options).catch((e) => console.log(e));
+    return fetch(URL + "/buy/" + shopOfferId, options).catch((e) =>
+      console.log(e)
+    );
   } catch (e) {
     console.error("Error: ", e);
     return 0;

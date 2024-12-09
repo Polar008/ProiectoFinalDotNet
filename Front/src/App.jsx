@@ -34,10 +34,8 @@ function App() {
             localStorage.removeItem("storageJwt");
             navigate("/login");
           }else{
-            setJwt(JSON.parse(token));
+            setJwt(token);
           }
-
-          console.log("All god bro, come in" + x.status);
         });
     } else {
       navigate("/login");

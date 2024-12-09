@@ -35,9 +35,15 @@ function Login() {
     console.log(userName)
     authLogin(data)
     .then(t => {
-      saveJwtToStorage(t.token);
-      changeJwt(t.token)
-      navigate("/");
+      if(t != null)
+      {
+        saveJwtToStorage(t.token);
+        changeJwt(t.token)
+        navigate("/");
+      }
+      else{
+        alert("Email o contraseña incorrectos")
+      }
     })
     .catch()
   }
@@ -64,7 +70,7 @@ function Login() {
             required
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" size="lg" type="submit">
           Iniciar sesion
         </Button>
       </Form>
