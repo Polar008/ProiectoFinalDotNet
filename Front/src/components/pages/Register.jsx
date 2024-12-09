@@ -16,6 +16,8 @@ function Register() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [image, setImage] = useState(null);
+  const [charity, setCharity] = useState(null);
+  const [enterprise, setEnterprise] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
   async function handleSubmit(e) {
@@ -28,22 +30,14 @@ function Register() {
 
       // Create the form data
       const datos = {
-        "name": name,
-        "email": email,
-        "password": password,
-        "photo": String(photoLink),
-        "dateOfBirth": date,
-        "postalCode": postalCode
+        name: name,
+        email: email,
+        password: password,
+        photo: String(photoLink),
+        dateOfBirth: date,
+        postalCode: postalCode,
       };
-      console.log(datos)
-
-      // const formData = new FormData();
-      // formData.append("name", name);
-      // formData.append("email", email);
-      // formData.append("password", password);
-      // formData.append("photo", String(photoLink));
-      // formData.append("dateOfBirth", date);
-      // formData.append("postalCode", postalCode);
+      console.log(datos);
 
       createUser(datos);
       navigate("/login");
@@ -72,10 +66,20 @@ function Register() {
     setPassword(e.target.value);
   }
 
-  // function handleImageChange(e) {
-  //   const file = e.target.files[0];
-  //   setImage(file);
-  // }
+  function handleUpgradeToChange(e) {
+      if (e.target.value === "Enterprise") {
+        setEnterprise(true);
+        setCharity(false);
+      } else if (e.target.value === "Charity") {
+        setCharity(true);
+        setEnterprise(false);
+      }
+      else if (e.target.value === "User")
+      {
+        setCharity(false);
+        setEnterprise(false);
+      }
+  }
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -147,7 +151,7 @@ function Register() {
         </Form.Group>
 
         <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>Seleccionar imagen:</Form.Label>
+          <Form.Label>Seleccionar imagen</Form.Label>
           {previewUrl && (
             <div className="mb-3 text-center">
               <Image
@@ -168,16 +172,26 @@ function Register() {
           />
         </Form.Group>
 
-        {/* <Form.Group className='"mb-3' controldId="image">
-          <label htmlFor="imagen">Seleccionar imagen:</label>
-          <input
-            type="file"
-            id="imagen"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
-        </Form.Group> */}
+        <Form.Group className="mb-3">
+          <Form.Label>Tipo de cuenta</Form.Label>
+
+          <Form.Select name="Type" onChange={handleUpgradeToChange}>
+            <option value="User">Usuario</option>
+            <option value="Charity">Entidad Benefica</option>
+            <option value="Enterprise">Empresa</option>
+          </Form.Select>
+        </Form.Group>
+        {(enterprise || charity) && (
+          <Form.Group className="mb-3">
+            <Form.Label>CIF</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="123456789"
+              maxLength={9}
+              required
+            />
+          </Form.Group>
+        )}
 
         <Button variant="primary" type="submit">
           Registrate

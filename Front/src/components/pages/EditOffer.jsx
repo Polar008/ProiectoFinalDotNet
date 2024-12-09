@@ -10,6 +10,7 @@ import { uploadImage } from "../../controllers/UploadsController";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { jwtDecode } from "jwt-decode";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { URL } from "../../config";
 
@@ -17,6 +18,8 @@ function EditOffer() {
   const { id } = useParams();
   const [provinces, setProvinces] = useState([]);
   const [offerData, setOfferData] = useState(null);
+
+  const navigate = useNavigate();
 
   const jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
@@ -88,7 +91,12 @@ function EditOffer() {
       city: cityRef.current.value,
     };
 
-    await updateOfferApi(id, updatedOffer, jwt);
+    try {
+      await updateOfferApi(id, updatedOffer, jwt);
+      navigate("/profileCha");
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (

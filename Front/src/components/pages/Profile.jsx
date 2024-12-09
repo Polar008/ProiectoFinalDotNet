@@ -18,7 +18,6 @@ function Profile() {
   const [image, setImage] = useState(null);
   const [points, setPoints] = useState(null);
   const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
 
   const [offers, setOffers] = useState([]);
   const [rewards, setRewards] = useState([]);
@@ -32,6 +31,11 @@ function Profile() {
   var jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  function fetchData()
+  {
     var decodedToken = decodeJwt(jwt);
 
     getUserOffers(decodedToken.UserId, jwt)
@@ -48,9 +52,8 @@ function Profile() {
       setImage(o.photo);
       setPoints(o.points);
       setEmail(o.email);
-      setPassword(o.password);
     });
-  }, []);
+  }
 
   function decodeJwt(token) {
     try {
@@ -64,16 +67,17 @@ function Profile() {
 
   function onEdit() {}
 
-  function onUpgrade() {
-    navigate("/upgrade");
-  }
-
   function swapScreen(option) {
     setSelection(option);
   }
 
-  function onDeleteOfferClicked(id) {
-    leaveOffer(jwt, id);
+  async function onDeleteOfferClicked(id) {
+    try {
+      await leaveOffer(jwt, id);
+      fetchData(); // Call fetchData only after leaveOffer is complete
+    } catch (error) {
+      console.error("Failed to leave offer:", error);
+    }
   }
 
   function navigateOffer(offerId) {
@@ -100,8 +104,8 @@ function Profile() {
       <>
         {offers.length > 0 ? (
           offers.map((o, index) => (
-            <Row key={index} onClick={() => navigateOffer(o.id)}>
-              <Col xs={3}>
+            <Row key={index}>
+              <Col xs={3} onClick={() => navigateOffer(o.id)} style={{alignContent:"center"}}>
                 <Image
                   src={
                     o.imgBanner
@@ -112,13 +116,13 @@ function Profile() {
                   style={{ width: "75px", height: "75px" }}
                 />
               </Col>
-              <Col xs={7}>
+              <Col xs={7} onClick={() => navigateOffer(o.id)}>
                 <h3>{o.title}</h3>
                 <h4>{o.city}</h4>
                 <h4>{o.street}</h4>
               </Col>
-              <Col xs={2} onClick={() => onDeleteOfferClicked(o.id)}>
-                <FontAwesomeIcon icon={faPen} />
+              <Col xs={2} onClick={() => onDeleteOfferClicked(o.id)} style={{alignContent:"center"}}>
+                <FontAwesomeIcon icon={faPen}/>
               </Col>
             </Row>
           ))
@@ -156,9 +160,6 @@ function Profile() {
 
           <h2>Email</h2>
           <p>{email}</p>
-
-          <h2>Contraseña</h2>
-          <p>*****</p>
 
           <h2>Codigo Postal</h2>
           <p>{postalCode}</p>

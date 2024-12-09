@@ -6,11 +6,13 @@ import { getProvinces } from "../../controllers/ProvinceController";
 import { uploadImage } from "../../controllers/UploadsController";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function CreateOffer() {
   const [provinces, setProvinces] = useState([]);
 
   var jwt = JSON.parse(localStorage.getItem("storageJwt"));
+  const navigate = useNavigate();
 
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -46,6 +48,7 @@ function CreateOffer() {
     const decodedToken = jwtDecode(jwt);
 
     console.log(decodedToken);
+   
 
     const uploadedImage = await uploadImage(image);
     const photoLink = uploadedImage.fileUrl;
@@ -61,7 +64,12 @@ function CreateOffer() {
       city: cityRef.current.value,
     };
 
-    createOfferApi(offer, jwt);
+    try {
+      await createOfferApi(offer, jwt);
+      navigate("/profileCha");
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
