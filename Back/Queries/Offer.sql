@@ -15,3 +15,7 @@ VALUES
 -- Verifica las inserciones
 SELECT * FROM Offers;
 
+SELECT * FROM Offers WHERE CharityId = 1;
+
+
+

@@ -14,3 +14,5 @@ VALUES
 
 -- Verifica las inserciones
 SELECT * FROM Rewards;
+
+SELECT TOP 1 * FROM Rewards WHERE ShopOfferId=31 and UserId=-1;

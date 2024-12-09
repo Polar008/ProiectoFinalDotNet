@@ -116,9 +116,10 @@ namespace Backend.Controllers
 		}
 
 		[HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetOffersOfUser(int userId){
+		public async Task<IActionResult> GetOffersOfUser(int userId)
+		{
 			var of = await _context.Offers.Where(o => o.UserOffers.Any(uo => uo.UserId == userId)).ToListAsync();
-            return Ok(of);
+			return Ok(of);
 		}
 
 		[HttpGet("count/{id}")]
@@ -185,6 +186,48 @@ namespace Backend.Controllers
 
 			return Ok(offer);
 		}
+
+		[HttpGet("charity")]
+		public async Task<IActionResult> GetOffersByCharityId()
+		{
+			var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+			int userId = Int32.Parse(userIdClaim);
+
+			var offers = await _context.Offers
+				.Include(o => o.Province)
+				.Include(o => o.Charity)
+				.Where(o => o.CharityId == userId)
+				.Select(o => new OfferWithUsersDto
+				{
+					Id = o.Id,
+					Title = o.Title,
+					Description = o.Description,
+					ImgBanner = o.ImgBanner,
+					Charity = new CharityDto
+					{
+						Id = o.Charity.Id,
+						Name = o.Charity.Name,
+					},
+					Enrolleds = o.UserOffers.Select(uo => new UserDto
+					{
+						Id = uo.User.Id,
+						Name = uo.User.Name
+					}).ToList(),
+					Capacity = o.Capacity,
+					Street = o.Street,
+					City = o.City,
+					Province = new ProvinceDto
+					{
+						Id = o.Province.Id,
+						Code = o.Province.Code,
+						Name = o.Province.Name
+					}
+				})
+				.ToListAsync();
+
+			return Ok(offers);
+		}
+
 
 		// PUT: api/Offers/5
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -255,6 +298,25 @@ namespace Backend.Controllers
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteOffer(int id)
 		{
+			var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+			int userId = Int32.Parse(userIdClaim);
+
+			var userExists = await _context.Users.AnyAsync(u => u.Id == userId);
+			if (!userExists)
+			{
+				return BadRequest(new { Message = "The UserId does not exist." });
+			}
+
+			var isCharityClaim = User?.Claims.FirstOrDefault(c => c.Type == "IsCharity")?.Value;
+			//return Content(isCharityClaim);
+			bool isCharity = true;
+			if (isCharityClaim == "False") isCharity = false;
+
+			if (!isCharity)
+			{
+				return BadRequest(new { Message = "The IsCharity Error" });
+			}
+
 			var offer = await _context.Offers.FindAsync(id);
 			if (offer == null)
 			{
