@@ -1,7 +1,7 @@
 INSERT INTO [dbo].[ShopOffers] 
-    ([Cost], [Title], [Description])
+    ([Cost], [Title], [Description], [ImgBanner], [CharityId])
 VALUES
-    (500, 'Gift Card', 'A $50 gift card for popular stores.'),
+    (500, 'Gift Card', 'A $50 gift card for popular stores.', 'dream.webp', 1),
     (300, 'Movie Tickets', 'Two tickets to any movie of your choice.'),
     (800, 'Fitness Tracker', 'A fitness tracker to help you stay healthy.'),
     (1000, 'Bluetooth Headphones', 'High-quality wireless headphones.'),
@@ -18,7 +18,17 @@ VALUES
 SELECT * FROM Rewards
 
 
-SELECT DISTINCT S.Id, S.Title, S.Description, S.Cost
+SELECT  
+    S.Id, 
+    S.Title, 
+    S.Description, 
+    S.Cost, 
+    S.ImgBanner,
+    U.Id as CharityId,
+    U.Name as Propietary
 FROM ShopOffers AS S
-JOIN Rewards AS R ON S.Id = R.ShopOfferId
-WHERE R.UserId = -1;
+JOIN Users AS U 
+    ON U.Id = S.CharityId and U.Id = 2
+WHERE U.IsEnterprise = 1;
+
+

@@ -125,11 +125,17 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CharityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgBanner")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")

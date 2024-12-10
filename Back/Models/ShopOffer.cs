@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Backend.Models
 {
@@ -16,5 +18,14 @@ namespace Backend.Models
 
 		[Required]
 		public string Description { get; set; } = string.Empty;
+
+		public string? ImgBanner { get; set; }
+
+		[Required]
+		[ForeignKey("Charity")]
+		public int CharityId { get; set; }
+
+		[JsonIgnore]
+		public ICollection<UserOffer> UserOffers { get; set; } = new List<UserOffer>();
 	}
 }

@@ -48,7 +48,9 @@ namespace Backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Cost = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgBanner = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CharityId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
