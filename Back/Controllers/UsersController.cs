@@ -114,6 +114,26 @@ namespace Backend.Controllers
 			return NoContent();
 		}
 
+		/*
+		    {
+			  "userIds": [1, 2, 3, 4],
+			  "pointsToAdd": 5
+			}
+		 */
+
+		[HttpPost("addPoints")]
+		public async Task<IActionResult> AddPoints(List<int> userIds, int pointsToAdd)
+		{
+			// Convierte la lista de Ids a un formato adecuado para SQL
+			var userIdsString = string.Join(",", userIds);
+
+			var query = $"UPDATE Users SET Points = Points + {pointsToAdd} WHERE Id IN ({userIdsString})";
+			await _context.Database.ExecuteSqlRawAsync(query);
+
+			return Ok("Points updated correctly.");
+		}
+
+
 		private bool UserExists(int id)
 		{
 			return _context.Users.Any(e => e.Id == id);
