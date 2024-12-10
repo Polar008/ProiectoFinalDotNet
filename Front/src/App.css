@@ -140,4 +140,14 @@
     font-size: 18px;
     color: #007bff;
   }
+
+  .imgHeight{
+    height: 8rem;
+    overflow: hidden;
+  }
+
+  .bodyHeight{
+    height: 6rem;
+    overflow: hidden;
+  }
   

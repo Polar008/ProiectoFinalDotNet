@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 import { URL } from "../../config";
 
-
 function Home() {
   const [offers, setOffers] = useState([]);
   const [isFilteredHome, setIsFilteredHome] = useState([]);
@@ -29,7 +28,7 @@ function Home() {
       {offers?.length > 0 ? (
         <>
           <SearchBar location="home" isFilteredHome={setIsFilteredHome} />
-          <Container className="my-4">
+          <Container className="my-4 pb-5">
             <Row>
               {isFilteredHome.length > 0
                 ? offers
@@ -46,11 +45,12 @@ function Home() {
                       >
                         <Card>
                           <Card.Img
+                            className="imgHeight"
                             variant="top"
                             src={`${URL}/uploads/${c.imgBanner}`}
                             alt={`Card ${index + 1}`}
                           />
-                          <Card.Body>
+                          <Card.Body className="bodyHeight">
                             <Card.Title>{c.title}</Card.Title>
                             <Card.Text>{c.description}.</Card.Text>
                           </Card.Body>
@@ -69,11 +69,12 @@ function Home() {
                     >
                       <Card>
                         <Card.Img
+                          className="imgHeight"
                           variant="top"
                           src={`${URL}/uploads/${c.imgBanner}`}
                           alt={`Card ${index + 1}`}
                         />
-                        <Card.Body>
+                        <Card.Body className="bodyHeight">
                           <Card.Title>{c.title}</Card.Title>
                           <Card.Text>{c.description}.</Card.Text>
                         </Card.Body>

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { getShopOffers } from "../../controllers/PointOfferController";
+import "../../App.css";
+import { URL } from "../../config";
 
 function PointShop() {
   const [offers, setOffers] = useState([]);
@@ -22,7 +24,7 @@ function PointShop() {
   return (
     <>
       <SearchBar location="shop" isFilteredshop={setIsFilteredShop} />
-      <Container className="my-4">
+      <Container className="my-4 pb-5">
         <Row>
           {isFilteredShop.length > 0
             ? offers
@@ -39,11 +41,12 @@ function PointShop() {
                   >
                     <Card>
                       <Card.Img
+                        className="imgHeight"
                         variant="top"
-                        src={`https://imgs.search.brave.com/6BBU9u_WMLihxAqxYL69Fsnn9huqfdchw7mYW75BIH0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/aGFjZXNmYWx0YS5v/cmcvSU8vdXN1YXJp/b3MvdHVmb3RvLzlm/YjI3MjNmNzUwOTQz/NWZiZGMxYWQxMDUw/ZjIzZTE3XzIyNVgy/MjVfcy5qcGc`}
+                        src={`${URL}/uploads/${c.imgBanner}`}
                         alt={`Card ${index + 1}`}
                       />
-                      <Card.Body>
+                      <Card.Body className="bodyHeight">
                         <Card.Title>{c.title}</Card.Title>
                         <Card.Text>{c.description}.</Card.Text>
                       </Card.Body>
@@ -62,11 +65,12 @@ function PointShop() {
                 >
                   <Card>
                     <Card.Img
+                      className="imgHeight"
                       variant="top"
-                      src={`https://imgs.search.brave.com/6BBU9u_WMLihxAqxYL69Fsnn9huqfdchw7mYW75BIH0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/aGFjZXNmYWx0YS5v/cmcvSU8vdXN1YXJp/b3MvdHVmb3RvLzlm/YjI3MjNmNzUwOTQz/NWZiZGMxYWQxMDUw/ZjIzZTE3XzIyNVgy/MjVfcy5qcGc`}
+                      src={`${URL}/uploads/${c.imgBanner}`}
                       alt={`Card ${index + 1}`}
                     />
-                    <Card.Body>
+                    <Card.Body className="bodyHeight">
                       <Card.Title>{c.title}</Card.Title>
                       <Card.Text>{c.description}.</Card.Text>
                     </Card.Body>

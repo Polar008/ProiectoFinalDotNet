@@ -2,9 +2,17 @@ import NavBar from "../elements/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  ButtonGroup,
+  FloatingLabel,
+  Form,
+} from "react-bootstrap";
 import { getUserOffers } from "../../controllers/OfferController";
-import { getUserData } from "../../controllers/UserController";
+import { getUserData, updateUserdApi } from "../../controllers/UserController";
 import { getUserRewards } from "../../controllers/RewardsController";
 import Image from "react-bootstrap/Image";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +21,8 @@ import { jwtDecode } from "jwt-decode";
 import { URL } from "../../config";
 
 function Profile() {
+  const [isEdit, setIsEdit] = useState(false);
+
   const [name, setName] = useState(null);
   const [postalCode, setPostalCode] = useState(null);
   const [image, setImage] = useState(null);
@@ -34,8 +44,7 @@ function Profile() {
     fetchData();
   }, []);
 
-  function fetchData()
-  {
+  function fetchData() {
     var decodedToken = decodeJwt(jwt);
 
     getUserOffers(decodedToken.UserId, jwt)
@@ -55,6 +64,26 @@ function Profile() {
     });
   }
 
+  function submitChange() {
+    const decodedToken = decodeJwt(jwt);
+    updateUserdApi(
+      decodedToken.UserId,
+      {
+        id: decodedToken.UserId,
+        name: name,
+        email: email,
+        photo: image,
+        points: points,
+        postalCode: postalCode,
+      },
+      jwt
+    );
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
+
   function decodeJwt(token) {
     try {
       const decodedToken = jwtDecode(token);
@@ -65,7 +94,9 @@ function Profile() {
     }
   }
 
-  function onEdit() {}
+  function onEdit() {
+    setIsEdit(true);
+  }
 
   function swapScreen(option) {
     setSelection(option);
@@ -93,9 +124,9 @@ function Profile() {
     try {
       console.log(copyText);
       await navigator.clipboard.writeText("copyText");
-      alert('Text copied to clipboard!');
+      alert("Text copied to clipboard!");
     } catch (err) {
-      console.error('Failed to copy: ', err);
+      console.error("Failed to copy: ", err);
     }
   };
 
@@ -105,7 +136,11 @@ function Profile() {
         {offers.length > 0 ? (
           offers.map((o, index) => (
             <Row key={index}>
-              <Col xs={3} onClick={() => navigateOffer(o.id)} style={{alignContent:"center"}}>
+              <Col
+                xs={3}
+                onClick={() => navigateOffer(o.id)}
+                style={{ alignContent: "center" }}
+              >
                 <Image
                   src={
                     o.imgBanner
@@ -121,8 +156,12 @@ function Profile() {
                 <h4>{o.city}</h4>
                 <h4>{o.street}</h4>
               </Col>
-              <Col xs={2} onClick={() => onDeleteOfferClicked(o.id)} style={{alignContent:"center"}}>
-                <FontAwesomeIcon icon={faPen}/>
+              <Col
+                xs={2}
+                onClick={() => onDeleteOfferClicked(o.id)}
+                style={{ alignContent: "center" }}
+              >
+                <FontAwesomeIcon icon={faPen} />
               </Col>
             </Row>
           ))
@@ -147,29 +186,6 @@ function Profile() {
         ) : (
           <h2>No tienes niguna recompensa</h2>
         )}
-      </>
-    );
-  }
-
-  function Info() {
-    return (
-      <>
-        <Row>
-          <h2>Nombre</h2>
-          <p>{name}</p>
-
-          <h2>Email</h2>
-          <p>{email}</p>
-
-          <h2>Codigo Postal</h2>
-          <p>{postalCode}</p>
-
-          <h2>Puntos:{points}</h2>
-
-          <button onClick={onUpgrade}>Mejorar</button>
-
-          <button onClick={onEdit}>Editar Perfil</button>
-        </Row>
       </>
     );
   }
@@ -228,7 +244,89 @@ function Profile() {
         ) : selection === "rewards" ? (
           <Reward />
         ) : selection === "info" ? (
-          <Info />
+          <>
+            <Form onSubmit={handleSubmit} className="p-3">
+              <Form.Group className="mb-3">
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Nombre"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    name="accountName"
+                    placeholder="Dimitri"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={!isEdit}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Email"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    name="accountEmail"
+                    placeholder="PepeSanchez@gmail.com"
+                    //value={(()=> JSON.parse(JSON.stringify(email)))()}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={!isEdit}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Codigo Postal"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="text"
+                    name="accountPCode"
+                    placeholder="PepeSanchez@gmail.com"
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    disabled={!isEdit}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+            </Form>
+
+            {!isEdit && (
+              <Button variant="success" onClick={onEdit}>
+                Editar
+              </Button>
+            )}
+            {isEdit && (
+              <ButtonGroup>
+                <Button
+                  variant="success"
+                  onClick={() => {
+                    submitChange();
+                    setIsEdit(false);
+                  }}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => {
+                    setName(name);
+                    setEmail(email);
+                    setPostalCode(postalCode);
+                    setIsEdit(false);
+                  }}
+                >
+                  Reset
+                </Button>
+              </ButtonGroup>
+            )}
+          </>
         ) : (
           <h1>ERROR</h1>
         )}

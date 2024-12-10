@@ -36,7 +36,7 @@ function ProfileCharity() {
     setIsEdit(true);
   }
 
-  function submiteChange() {
+  function submitChange() {
     const decodedToken = decodeJwt(jwt);
     updateUserdApi(
       decodedToken.UserId,
@@ -214,7 +214,7 @@ function ProfileCharity() {
                 <Button
                   variant="success"
                   onClick={() => {
-                    submiteChange();
+                    submitChange();
                     setIsEdit(false);
                   }}
                 >
