@@ -32,7 +32,6 @@ function UpgradeAccount() {
 
   
   const handleSubmit = (e) => {
-    console.log("guebonaso")
     e.preventDefault();
     const decodedToken = decodeJwt(jwt);
     getUserData(decodedToken.UserId).then((u) => {

@@ -114,3 +114,31 @@ export const getUserOffers = (id, token) => {
     .then((x) => x.json())
     .catch((e) => console.log(e));
 };
+
+export const getCharityOffers = (token) => {
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return fetch(URL + "/charity", options)
+    .then((x) => x.json())
+    .catch((e) => console.log(e));
+};
+
+export const deleteOffers = (id, token) => {
+  const options = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return fetch(URL + "/" + id, options)
+    .then((x) => x.json())
+    .catch((e) => console.log(e));
+};

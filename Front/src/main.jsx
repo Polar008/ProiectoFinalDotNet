@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LandingPage from "./components/pages/LandingPage.jsx"
 import Home from "./components/pages/Home.jsx";
 import Login from "./components/pages/Login.jsx";
 import Register from "./components/pages/Register.jsx";
@@ -9,6 +10,8 @@ import Profile from "./components/pages/Profile.jsx";
 import PointShop from "./components/pages/PointShop.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Offer from "./components/pages/Offer.jsx";
+import OfferCloser from "./components/pages/OfferCloser.jsx";
+import OfferCloserUsers from "./components/pages/OfferCloserUsers.jsx";
 import CreatePointOffer from "./components/pages/CreatePointOffer.jsx";
 import PointOffer from "./components/pages/PointOffer.jsx";
 import CreateOffer from "./components/pages/CreateOffer.jsx";
@@ -25,6 +28,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
+          <Route path="/landingPage" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/pointShop" element={<PointShop />} />
@@ -34,6 +38,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/profileEnt" element={<ProfileEnterprise />} />
           <Route path="/register" element={<Register />} />
           <Route path="/offer/:id" element={<Offer />} />
+          <Route path="/offer/closer" element={<OfferCloser />} />
+          <Route path="/offer/closer/:id" element={<OfferCloserUsers />} />
           <Route path="/shopOffer/:id" element={<PointOffer />} />
           <Route path="/shopOffer/register" element={<CreatePointOffer />} />
           <Route path="/shopOffer/edit/:id" element={<EditPointOffer/>} />

@@ -19,7 +19,7 @@ export const joinOffer = (token, offerId) => {
 
 export const leaveOffer = (token, offerId) => {
   const options = {
-    method: "POST",
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import { Container, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import {
   getShopOffer,
   updateShopOfferApi,
@@ -13,6 +14,7 @@ function EditPointOffer() {
   const { id } = useParams();
   const [shopOfferData, setShopOfferData] = useState(null);
 
+  const navigate = useNavigate();
   const jwt = JSON.parse(localStorage.getItem("storageJwt"));
 
   const titleRef = useRef(null);
@@ -27,7 +29,12 @@ function EditPointOffer() {
       cost: costRef.current.value,
     };
 
-    await updateShopOfferApi(id, updatedShopOffer, jwt);
+    try {
+      await updateShopOfferApi(id, updatedShopOffer, jwt);
+      navigate("/profileCha");
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {
