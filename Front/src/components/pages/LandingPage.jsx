@@ -15,7 +15,7 @@ function LandingPage() {
           <Col xs={2}></Col>
           <Col xs={8}>
             <Image
-              src="./src/assets/Logo.png"
+              src="./src/assets/PixelCuality.png"
               style={{ width: "100%", justifyContent: "center" }}
             ></Image>
           </Col>
