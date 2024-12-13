@@ -25,7 +25,11 @@ function SearchBar({ location, isFilteredHome, isFilteredshop }) {
   }, []);
 
   function handleSuggestionClick(id) {
-    navigate("/offer/" + id);
+    if (location == "home") {
+      navigate("/offer/" + id);
+    } else if (location == "shop") {
+      navigate("/shopOffer/" + id);
+    }
   }
 
   function handleInputChange(e) {

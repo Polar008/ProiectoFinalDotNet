@@ -20,6 +20,8 @@ function CreateOffer() {
   const capacityRef = useRef(null);
   const streetRef = useRef(null);
   const cityRef = useRef(null);
+  const startDateRef = useRef(null);
+  const endDateRef = useRef(null);
 
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -48,7 +50,6 @@ function CreateOffer() {
     const decodedToken = jwtDecode(jwt);
 
     console.log(decodedToken);
-   
 
     const uploadedImage = await uploadImage(image);
     const photoLink = uploadedImage.fileUrl;
@@ -62,6 +63,8 @@ function CreateOffer() {
       capacity: capacityRef.current.value,
       street: streetRef.current.value,
       city: cityRef.current.value,
+      dateBegin: startDateRef.current.value,
+      dateEnd: endDateRef.current.value
     };
 
     try {
@@ -151,6 +154,24 @@ function CreateOffer() {
                 </option>
               ))}
             </Form.Select>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Elige date de inicio</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              placeholder="Select date and time"
+              ref={startDateRef}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Elige date de final</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              placeholder="Select date and time"
+              ref={endDateRef}
+            />
           </Form.Group>
 
           <Button variant="primary" onClick={handleCreateOffer}>

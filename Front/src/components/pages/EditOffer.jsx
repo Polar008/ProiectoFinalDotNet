@@ -29,6 +29,8 @@ function EditOffer() {
   const capacityRef = useRef(null);
   const streetRef = useRef(null);
   const cityRef = useRef(null);
+  const startDateRef = useRef(null);
+  const endDateRef = useRef(null);
 
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -52,6 +54,8 @@ function EditOffer() {
         streetRef.current.value = data.street;
         cityRef.current.value = data.city;
         provinceIdRef.current.value = data.province.id;
+        startDateRef.current.value = data.dateBegin;
+        endDateRef.current.value = data.dateEnd;
         setPreviewUrl(`${URL}/uploads/${data.imgBanner}`);
       })
       .catch(() => {});
@@ -89,6 +93,8 @@ function EditOffer() {
       capacity: capacityRef.current.value,
       street: streetRef.current.value,
       city: cityRef.current.value,
+      dateBegin: startDateRef.current.value,
+      dateEnd: endDateRef.current.value,
     };
 
     try {
@@ -177,6 +183,23 @@ function EditOffer() {
                 </option>
               ))}
             </Form.Select>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Elige date de inicio</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              placeholder="Select date and time"
+              ref={startDateRef}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Elige date de final</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              placeholder="Select date and time"
+              ref={endDateRef}
+            />
           </Form.Group>
 
           <Button variant="primary" onClick={handleUpdateOffer}>

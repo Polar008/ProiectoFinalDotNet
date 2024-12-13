@@ -10,7 +10,7 @@ function LandingPage() {
 
   return (
     <>
-      <Container>
+      <Container className="">
         <Row>
           <Col xs={2}></Col>
           <Col xs={8}>

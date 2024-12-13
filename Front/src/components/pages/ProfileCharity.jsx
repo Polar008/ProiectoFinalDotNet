@@ -94,7 +94,7 @@ function ProfileCharity() {
                 <h4>{o.city}</h4>
                 <h4>{o.street}</h4>
               </Col>
-              <Col xs={2} onClick={() => deleteOffers(o.id, jwt)}>
+              <Col xs={2} onClick={() => navigate("/offer/closer/"+o.id)}>
                 <FontAwesomeIcon icon={faPen} />
               </Col>
             </Row>

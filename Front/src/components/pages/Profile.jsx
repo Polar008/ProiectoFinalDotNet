@@ -298,9 +298,17 @@ function Profile() {
             </Form>
 
             {!isEdit && (
-              <Button variant="success" onClick={onEdit}>
-                Editar
-              </Button>
+              <ButtonGroup>
+                <Button variant="success" onClick={onEdit}>
+                  Editar
+                </Button>
+                <Button variant="danger" onClick={()=>{
+                  localStorage.removeItem('storageJwt');
+                  navigate("/landingPage");
+                }}>
+                  Salir
+                </Button>
+              </ButtonGroup>
             )}
             {isEdit && (
               <ButtonGroup>

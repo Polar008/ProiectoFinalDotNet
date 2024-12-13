@@ -5,7 +5,7 @@ import { getOffer } from "../../controllers/OfferController";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { faUser, faBuilding } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBuilding, faClock } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import { joinOffer } from "../../controllers/UserOfferController";
 import { jwtDecode } from "jwt-decode";
@@ -32,12 +32,12 @@ function Offer() {
     checkIfJoined();
   }, [offer]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsBlack(!isBlack);
-      setTime(time + 1);
-    }, 10);
-  }, [time]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsBlack(!isBlack);
+  //     setTime(time + 1);
+  //   }, 10);
+  // }, [time]);
 
   function checkIfJoined() {
     let decodedToken = decodeJwt(jwt);
@@ -59,6 +59,30 @@ function Offer() {
       console.error("Invalid token:", error);
       return null;
     }
+  }
+
+  function dateShower(start, end) {
+    const startDate = new Date(start);
+    console.log(startDate);
+    const endDate = new Date(end);
+    const diffInMilliseconds = endDate - startDate;
+
+    // Convert milliseconds to hours and minutes
+    const hours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
+    const minutes = Math.floor(
+      (diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60)
+    );
+
+    console.log(startDate.getMonth());
+    return (
+      startDate.getDate() +
+      "/" +
+      (startDate.getMonth() + 1) +
+      "/" +
+      startDate.getFullYear() +
+      " Duración: " +
+      `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`
+    );
   }
 
   function handleArrowOnClick() {
@@ -147,6 +171,16 @@ function Offer() {
             <Col xs={3} lg={2} className="text-left">
               <p className="lead">
                 {offer.enrolleds?.length + "/" + offer.capacity}
+              </p>
+            </Col>
+          </Row>
+          <Row className="justify-content-left">
+            <Col xs={1} lg={1} className="text-left">
+              <FontAwesomeIcon icon={faClock} />
+            </Col>
+            <Col xs={11} className="text-left">
+              <p className="lead">
+                {dateShower(offer.dateBegin, offer.dateEnd)}
               </p>
             </Col>
           </Row>

@@ -44,7 +44,7 @@ export const getUserData = (id, token) => {
     },
   };
 
-  return fetch(URL + "/"+id, options)
+  return fetch(URL + "/" + id, options)
     .then((x) => x.json())
     .catch((e) => console.log(e));
 };
@@ -64,5 +64,19 @@ export const updateUserdApi = (id, updatedUser, token) => {
   } catch (e) {
     console.error("Error: ", e);
     return 0;
+  }
+};
+
+export const addPoints = (requestBody) => {
+  try {
+    fetch(URL + "/addPoints", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+  } catch (error) {
+    console.error("Error al llamar a la API:", error);
   }
 };

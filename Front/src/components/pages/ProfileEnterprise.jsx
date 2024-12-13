@@ -47,7 +47,7 @@ function ProfileEnterprise() {
         id: user.id,
         name: name,
         email: email,
-        password: "code",
+        password: user.password,
         photo: user.photo,
         dateOfBirth: user.dateOfBirth,
         isEnterprise: user.isEnterprise,

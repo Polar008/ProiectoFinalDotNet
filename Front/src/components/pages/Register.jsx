@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import { useState } from "react";
 import { uploadImage } from "../../controllers/UploadsController";
 import { useNavigate } from "react-router-dom";
-import { Image } from "react-bootstrap";
+import { Container, Image } from "react-bootstrap";
 import { createUser } from "../../controllers/UserController";
 
 function Register() {
@@ -36,6 +36,8 @@ function Register() {
         photo: String(photoLink),
         dateOfBirth: date,
         postalCode: postalCode,
+        isEnterprise: enterprise,
+        isCharity: charity,
       };
       console.log(datos);
 
@@ -67,18 +69,16 @@ function Register() {
   }
 
   function handleUpgradeToChange(e) {
-      if (e.target.value === "Enterprise") {
-        setEnterprise(true);
-        setCharity(false);
-      } else if (e.target.value === "Charity") {
-        setCharity(true);
-        setEnterprise(false);
-      }
-      else if (e.target.value === "User")
-      {
-        setCharity(false);
-        setEnterprise(false);
-      }
+    if (e.target.value === "Enterprise") {
+      setEnterprise(true);
+      setCharity(false);
+    } else if (e.target.value === "Charity") {
+      setCharity(true);
+      setEnterprise(false);
+    } else if (e.target.value === "User") {
+      setCharity(false);
+      setEnterprise(false);
+    }
   }
 
   const handleImageChange = (event) => {
@@ -97,106 +97,109 @@ function Register() {
 
   return (
     <>
-      <h1>Register</h1>
-      <Form onSubmit={handleSubmit}>
-        <Row className="mb-3">
-          <Form.Group controlId="name">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control
-              placeholder="Nombre Completo"
-              onChange={handleNameChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group controlId="postalCode">
-            <Form.Label>Codigo Postal</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Codigo Postal"
-              onChange={handlePostalCodeChange}
-              required
-            />
-          </Form.Group>
-        </Row>
-
-        <Form.Group controlId="age">
-          <Form.Label>Fecha De Nacimiento</Form.Label>
-          <Form.Control
-            type="date"
-            placeholder="Fecha de nacimiento"
-            onChange={handleDateChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Email"
-            onChange={handleEmailChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Contraseña"
-            onChange={handlePasswordChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>Seleccionar imagen</Form.Label>
-          {previewUrl && (
-            <div className="mb-3 text-center">
-              <Image
-                src={previewUrl}
-                alt="Preview"
-                rounded
-                fluid
-                style={{ maxWidth: "100%", maxHeight: "300px" }}
+      <Container className="d-flex flex-column align-items-center justify-content-center my-5">
+        <h1>Register</h1>
+        <Form onSubmit={handleSubmit}>
+          <Row className="mb-3">
+            <Form.Group controlId="name">
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                placeholder="Nombre Apellido1 Apellido2"
+                onChange={handleNameChange}
+                required
               />
-            </div>
-          )}
-          <Form.Control
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
-        </Form.Group>
+            </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Tipo de cuenta</Form.Label>
+            <Form.Group controlId="postalCode">
+              <Form.Label>Codigo Postal</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="000000"
+                onChange={handlePostalCodeChange}
+                required
+              />
+            </Form.Group>
+          </Row>
 
-          <Form.Select name="Type" onChange={handleUpgradeToChange}>
-            <option value="User">Usuario</option>
-            <option value="Charity">Entidad Benefica</option>
-            <option value="Enterprise">Empresa</option>
-          </Form.Select>
-        </Form.Group>
-        {(enterprise || charity) && (
-          <Form.Group className="mb-3">
-            <Form.Label>CIF</Form.Label>
+          <Form.Group controlId="age">
+            <Form.Label>Fecha De Nacimiento</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="123456789"
-              maxLength={9}
+              type="date"
+              placeholder="Fecha de nacimiento"
+              onChange={handleDateChange}
               required
             />
           </Form.Group>
-        )}
 
-        <Button variant="primary" type="submit">
-          Registrate
-        </Button>
-      </Form>
+          <Form.Group className="mb-3" controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="ejemplo@gmail.com"
+              onChange={handleEmailChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="password">
+            <Form.Label>Contraseña</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Contraseña"
+              onChange={handlePasswordChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Label>Seleccionar imagen</Form.Label>
+            {previewUrl && (
+              <div className="mb-3 text-center">
+                <Image
+                  src={previewUrl}
+                  alt="Preview"
+                  rounded
+                  fluid
+                  style={{ maxWidth: "100%", maxHeight: "300px" }}
+                />
+              </div>
+            )}
+            <Form.Control
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Tipo de cuenta</Form.Label>
+
+            <Form.Select name="Type" onChange={handleUpgradeToChange}>
+              <option value="User">Usuario</option>
+              <option value="Charity">Entidad Benefica</option>
+              <option value="Enterprise">Empresa</option>
+            </Form.Select>
+          </Form.Group>
+          {(enterprise || charity) && (
+            <Form.Group className="mb-3">
+              <Form.Label>CIF</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="123456789"
+                maxLength={9}
+                required
+              />
+            </Form.Group>
+          )}
+          <div className="d-grid gap-2">
+            <Button variant="primary" type="submit">
+              Registrate
+            </Button>
+          </div>
+        </Form>
+      </Container>
     </>
   );
 }

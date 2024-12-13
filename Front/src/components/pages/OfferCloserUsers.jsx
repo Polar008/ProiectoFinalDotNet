@@ -1,7 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { getOffer } from "../../controllers/OfferController";
+import { addPoints } from "../../controllers/UserController";
+import { deleteOffers } from "../../controllers/OfferController";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
@@ -28,6 +30,17 @@ function OfferCloserUsers() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [dicc, setDicc] = useState({
+    13: false,
+  });
+
+  const addId = (id, state) => {
+    setDicc((prevDiccionario) => ({
+      ...prevDiccionario,
+      [id]: state,
+    }));
+  };
 
   useEffect(() => {
     getOffer(id, jwt).then((o) => setOffer(o));
@@ -70,7 +83,7 @@ function OfferCloserUsers() {
 
   function handleArrowOnClick() {
     // console.log(offer);
-    navigate("/offer/closer");
+    navigate("/profileCha");
   }
 
   function tryJoinOffer() {
@@ -80,7 +93,42 @@ function OfferCloserUsers() {
   }
 
   function VerifyHandler(id) {
-    alert(id);
+    // alert(id);
+
+    if (id in dicc) {
+      // console.log(`La clave ${id} existe en el diccionario`);}
+      dicc[id] = !dicc[id];
+    } else {
+      addId(id, true);
+    }
+  }
+
+  async function submiteHandle() {
+
+    let array = [];
+    for (let id in dicc) {
+      dicc[id];
+    }
+
+    Object.keys(dicc).forEach((clave) => {
+      array.push(clave);
+    });
+
+    const intArray = array.map((str) => parseInt(str, 10));
+    const requestBody = {
+      userIds: intArray,
+      pointsToAdd: 5,
+    };
+
+    try {
+      await addPoints(requestBody);
+      await deleteOffers(id, jwt);
+    } catch (e) {
+      console.log(e);
+    }
+
+    handleClose();
+    handleArrowOnClick();
   }
 
   return (
@@ -187,7 +235,7 @@ function OfferCloserUsers() {
                         <Form.Check // prettier-ignore
                           type="switch"
                           id="custom-switch"
-                          label="Check"
+                          label="Asistido"
                           onChange={() => VerifyHandler(off.id)}
                         />
                       </p>
@@ -198,7 +246,7 @@ function OfferCloserUsers() {
                   <Button variant="secondary" onClick={handleClose}>
                     Cancelar
                   </Button>
-                  <Button variant="primary" onClick={handleClose}>
+                  <Button variant="primary" onClick={submiteHandle}>
                     Cerrar Oferta
                   </Button>
                 </Modal.Footer>
