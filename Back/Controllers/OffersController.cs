@@ -156,6 +156,8 @@ namespace Backend.Controllers
 					}).ToList(),
 					Capacity = o.Capacity,
 					Street = o.Street,
+					DateBegin = o.DateBegin,
+					DateEnd = o.DateEnd,
 					City = o.City,
 					Province = new ProvinceDto
 					{
@@ -284,6 +286,8 @@ namespace Backend.Controllers
 				CharityId = createOfferDto.CharityId,
 				ProvinceId = createOfferDto.ProvinceId,
 				Street = createOfferDto.Street,
+				DateBegin = createOfferDto.DateBegin,
+				DateEnd = createOfferDto.DateEnd,
 				City = createOfferDto.City
 			};
 
@@ -317,11 +321,15 @@ namespace Backend.Controllers
 				return BadRequest(new { Message = "The IsCharity Error" });
 			}
 
+
 			var offer = await _context.Offers.FindAsync(id);
 			if (offer == null)
 			{
 				return NotFound();
 			}
+
+			var query = $"DELETE FROM UserOffers WHERE OfferId = {id}";
+			await _context.Database.ExecuteSqlRawAsync(query);
 
 			_context.Offers.Remove(offer);
 			await _context.SaveChangesAsync();

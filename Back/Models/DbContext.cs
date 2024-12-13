@@ -37,11 +37,11 @@ namespace Backend.Models
                 .HasForeignKey(uo => uo.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<UserOffer>()
-                .HasOne(uo => uo.Offer)
-                .WithMany(o => o.UserOffers)
-                .HasForeignKey(uo => uo.OfferId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // modelBuilder.Entity<UserOffer>()
+            //     .HasOne(uo => uo.Offer)
+            //     .WithMany(o => o.UserOffers)
+            //     .HasForeignKey(uo => uo.OfferId)
+            //     .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

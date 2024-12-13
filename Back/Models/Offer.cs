@@ -33,6 +33,10 @@ namespace Backend.Models
         [JsonIgnore]
         public Province? Province { get; set; }
 
+        public DateTime? DateBegin { get; set; }
+
+        public DateTime? DateEnd { get; set; }
+
         [Required]
         [MaxLength(150)]
         public string Street { get; set; } = string.Empty;

@@ -160,6 +160,11 @@ namespace Backend.Controllers
 				return BadRequest(new { Message = "The shopOffer does not exist." });
 			}
 
+			if (user.Points <= 0)
+			{
+				return BadRequest(new { Message = "The user does not have enough points." });
+			}
+
 			if (user.Points < shopOffer.Cost)
 			{
 				return BadRequest(new { Message = "The user does not have enough points." });

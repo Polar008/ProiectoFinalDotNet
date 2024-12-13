@@ -89,8 +89,8 @@ public class Program
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
 
-                //db.Database.EnsureDeleted();
-                //db.Database.Migrate();
+                // db.Database.EnsureDeleted();
+                // db.Database.Migrate();
 
                 if (!db.Users.Any(u => u.Email == "admin@gmail.com"))
                 {

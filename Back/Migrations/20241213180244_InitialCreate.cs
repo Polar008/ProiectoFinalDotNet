@@ -90,6 +90,8 @@ namespace Backend.Migrations
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     CharityId = table.Column<int>(type: "int", nullable: false),
                     ProvinceId = table.Column<int>(type: "int", nullable: false),
+                    DateBegin = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Street = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
@@ -115,7 +117,8 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    OfferId = table.Column<int>(type: "int", nullable: false)
+                    OfferId = table.Column<int>(type: "int", nullable: false),
+                    ShopOfferId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -125,7 +128,12 @@ namespace Backend.Migrations
                         column: x => x.OfferId,
                         principalTable: "Offers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserOffers_ShopOffers_ShopOfferId",
+                        column: x => x.ShopOfferId,
+                        principalTable: "ShopOffers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_UserOffers_Users_UserId",
                         column: x => x.UserId,
@@ -150,6 +158,11 @@ namespace Backend.Migrations
                 column: "OfferId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserOffers_ShopOfferId",
+                table: "UserOffers",
+                column: "ShopOfferId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -163,13 +176,13 @@ namespace Backend.Migrations
                 name: "Rewards");
 
             migrationBuilder.DropTable(
-                name: "ShopOffers");
-
-            migrationBuilder.DropTable(
                 name: "UserOffers");
 
             migrationBuilder.DropTable(
                 name: "Offers");
+
+            migrationBuilder.DropTable(
+                name: "ShopOffers");
 
             migrationBuilder.DropTable(
                 name: "Provinces");

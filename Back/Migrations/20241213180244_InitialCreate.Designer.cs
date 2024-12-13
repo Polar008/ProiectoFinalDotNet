@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241210161704_InitialCreate")]
+    [Migration("20241213180244_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -43,6 +43,12 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("DateBegin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateEnd")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -208,9 +214,14 @@ namespace Backend.Migrations
                     b.Property<int>("OfferId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ShopOfferId")
+                        .HasColumnType("int");
+
                     b.HasKey("UserId", "OfferId");
 
                     b.HasIndex("OfferId");
+
+                    b.HasIndex("ShopOfferId");
 
                     b.ToTable("UserOffers");
                 });
@@ -239,8 +250,12 @@ namespace Backend.Migrations
                     b.HasOne("Backend.Models.Offer", "Offer")
                         .WithMany("UserOffers")
                         .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Backend.Models.ShopOffer", null)
+                        .WithMany("UserOffers")
+                        .HasForeignKey("ShopOfferId");
 
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany("UserOffers")
@@ -261,6 +276,11 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.Province", b =>
                 {
                     b.Navigation("Offers");
+                });
+
+            modelBuilder.Entity("Backend.Models.ShopOffer", b =>
+                {
+                    b.Navigation("UserOffers");
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
