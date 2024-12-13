@@ -13,6 +13,10 @@ namespace Backend.Models
         public string Description { get; set; } = string.Empty;
 
         public string? ImgBanner { get; set; }
+
+        public DateTime? DateBegin { get; set; }
+
+        public DateTime? DateEnd { get; set; }
         public int Capacity { get; set; }
 
         [Required]

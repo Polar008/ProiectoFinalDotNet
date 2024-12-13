@@ -39,15 +39,17 @@ namespace Backend.Controllers
 		public async Task<ActionResult<User>> GetUser(int id)
 		{
 			var user = await _context.Users.FindAsync(id);
-			//user.Password = "";
 
 			if (user == null)
 			{
 				return NotFound();
 			}
 
+			user.Password = null;
+
 			return user;
 		}
+
 
 		// PUT: api/Users/5
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -59,9 +61,19 @@ namespace Backend.Controllers
 				return BadRequest();
 			}
 
-			//user.Password = _passwordHasher.HashPassword(user, user.Password);
-			//user.Password = user.Password;
+			// Obtener el usuario existente de la base de datos
+			var existingUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+			if (existingUser == null)
+			{
+				return NotFound();
+			}
+
+			// Mantener la contraseña actual del usuario
+			user.Password = existingUser.Password;
+
+			// Actualizar solo los campos necesarios, excluyendo Password
 			_context.Entry(user).State = EntityState.Modified;
+			_context.Entry(user).Property(u => u.Password).IsModified = false;
 
 			try
 			{
@@ -122,12 +134,11 @@ namespace Backend.Controllers
 		 */
 
 		[HttpPost("addPoints")]
-		public async Task<IActionResult> AddPoints(List<int> userIds, int pointsToAdd)
+		public async Task<IActionResult> AddPoints([FromBody] AddPointsDto request)
 		{
-			// Convierte la lista de Ids a un formato adecuado para SQL
-			var userIdsString = string.Join(",", userIds);
+			var userIdsString = string.Join(",", request.UserIds);
 
-			var query = $"UPDATE Users SET Points = Points + {pointsToAdd} WHERE Id IN ({userIdsString})";
+			var query = $"UPDATE Users SET Points = Points + {request.PointsToAdd} WHERE Id IN ({userIdsString})";
 			await _context.Database.ExecuteSqlRawAsync(query);
 
 			return Ok("Points updated correctly.");
