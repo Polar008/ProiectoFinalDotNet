@@ -16,8 +16,8 @@ function Register() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [image, setImage] = useState(null);
-  const [charity, setCharity] = useState(null);
-  const [enterprise, setEnterprise] = useState(null);
+  const [charity, setCharity] = useState(false);
+  const [enterprise, setEnterprise] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
 
   async function handleSubmit(e) {
@@ -39,9 +39,10 @@ function Register() {
         isEnterprise: enterprise,
         isCharity: charity,
       };
+      console.log("mamarracho" + enterprise +" "+ charity);
       console.log(datos);
 
-      createUser(datos);
+      await createUser(datos);
       navigate("/login");
     } catch (error) {
       console.error("Error uploading image or submitting form:", error);

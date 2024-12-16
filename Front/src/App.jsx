@@ -32,13 +32,13 @@ function App() {
         .then((x) => {
           if (x.status == 401) {
             localStorage.removeItem("storageJwt");
-            navigate("/landingPage");
+            navigate("/");
           }else{
             setJwt(token);
           }
         });
     } else {
-      navigate("/landingPage");
+      navigate("/");
     }
   }, []);
 

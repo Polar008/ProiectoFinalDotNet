@@ -16,7 +16,7 @@ import {
   getCharityOffers,
 } from "../../controllers/OfferController";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../../config";
 
@@ -94,8 +94,8 @@ function ProfileCharity() {
                 <h4>{o.city}</h4>
                 <h4>{o.street}</h4>
               </Col>
-              <Col xs={2} onClick={() => navigate("/offer/closer/"+o.id)}>
-                <FontAwesomeIcon icon={faPen} />
+              <Col xs={2} onClick={() => navigate("/offer/closer/" + o.id)}>
+                <FontAwesomeIcon icon={faTrash} />
               </Col>
             </Row>
           ))
@@ -205,9 +205,20 @@ function ProfileCharity() {
             </Form>
 
             {!isEdit && (
-              <Button variant="success" onClick={onEdit}>
-                Editar
-              </Button>
+              <ButtonGroup>
+                <Button variant="success" onClick={onEdit}>
+                  Editar
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => {
+                    localStorage.removeItem("storageJwt");
+                    navigate("/");
+                  }}
+                >
+                  Salir
+                </Button>
+              </ButtonGroup>
             )}
             {isEdit && (
               <ButtonGroup>

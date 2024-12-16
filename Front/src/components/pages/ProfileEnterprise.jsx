@@ -12,14 +12,13 @@ import {
 import { getUserData, updateUserdApi } from "../../controllers/UserController";
 import { decodeJwt } from "../../config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../../config";
 import {
   deletePointOffers,
   getEnterpriseShopOffers,
 } from "../../controllers/PointOfferController";
-
 
 function ProfileEnterprise() {
   const [isEdit, setIsEdit] = useState(false);
@@ -32,8 +31,6 @@ function ProfileEnterprise() {
   const [selection, setSelection] = useState("offers");
   var jwt = JSON.parse(localStorage.getItem("storageJwt"));
   const navigate = useNavigate();
-
-  
 
   function onEdit() {
     setIsEdit(true);
@@ -98,7 +95,7 @@ function ProfileEnterprise() {
                 <h4>{o.street}</h4>
               </Col>
               <Col xs={2} onClick={() => deletePointOffers(o.id, jwt)}>
-                <FontAwesomeIcon icon={faPen} />
+                <FontAwesomeIcon icon={faTrash} />
               </Col>
             </Row>
           ))
@@ -211,9 +208,20 @@ function ProfileEnterprise() {
             </Form>
 
             {!isEdit && (
-              <Button variant="success" onClick={onEdit}>
-                Editar
-              </Button>
+              <ButtonGroup>
+                <Button variant="success" onClick={onEdit}>
+                  Editar
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => {
+                    localStorage.removeItem("storageJwt");
+                    navigate("/");
+                  }}
+                >
+                  Salir
+                </Button>
+              </ButtonGroup>
             )}
             {isEdit && (
               <ButtonGroup>

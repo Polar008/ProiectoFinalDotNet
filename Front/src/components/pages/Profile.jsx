@@ -242,7 +242,9 @@ function Profile() {
             <ActiveOffers />
           </div>
         ) : selection === "rewards" ? (
-          <Reward />
+          <div className="offers-container">
+            <Reward />
+          </div>
         ) : selection === "info" ? (
           <>
             <Form onSubmit={handleSubmit} className="p-3">
@@ -304,7 +306,7 @@ function Profile() {
                 </Button>
                 <Button variant="danger" onClick={()=>{
                   localStorage.removeItem('storageJwt');
-                  navigate("/landingPage");
+                  navigate("/");
                 }}>
                   Salir
                 </Button>
@@ -319,7 +321,7 @@ function Profile() {
                     setIsEdit(false);
                   }}
                 >
-                  Save
+                  Guardar
                 </Button>
                 <Button
                   variant="danger"
@@ -330,7 +332,7 @@ function Profile() {
                     setIsEdit(false);
                   }}
                 >
-                  Reset
+                  Reiniciar
                 </Button>
               </ButtonGroup>
             )}
