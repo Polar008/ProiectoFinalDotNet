@@ -306,7 +306,7 @@ function Profile() {
                 </Button>
                 <Button variant="danger" onClick={()=>{
                   localStorage.removeItem('storageJwt');
-                  navigate("/");
+                  navigate("/login");
                 }}>
                   Salir
                 </Button>

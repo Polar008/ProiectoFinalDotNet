@@ -216,7 +216,7 @@ function ProfileEnterprise() {
                   variant="danger"
                   onClick={() => {
                     localStorage.removeItem("storageJwt");
-                    navigate("/");
+                    navigate("/login");
                   }}
                 >
                   Salir

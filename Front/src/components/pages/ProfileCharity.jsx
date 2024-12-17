@@ -11,10 +11,7 @@ import {
 } from "react-bootstrap";
 import { getUserData, updateUserdApi } from "../../controllers/UserController";
 import { decodeJwt } from "../../config";
-import {
-  deleteOffers,
-  getCharityOffers,
-} from "../../controllers/OfferController";
+import { getCharityOffers } from "../../controllers/OfferController";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -213,7 +210,7 @@ function ProfileCharity() {
                   variant="danger"
                   onClick={() => {
                     localStorage.removeItem("storageJwt");
-                    navigate("/");
+                    navigate("/login");
                   }}
                 >
                   Salir
